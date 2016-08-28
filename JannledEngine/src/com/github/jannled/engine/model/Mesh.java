@@ -1,6 +1,6 @@
 package com.github.jannled.engine.model;
 
-public class ModelData
+public class Mesh
 {
 	private String name;
 	
@@ -11,20 +11,21 @@ public class ModelData
 	private Material material;
 	private float[] texturePosition;
 	
-	public ModelData(String name, float[] vertexPosition, float[] vertexColor, Material material, float[] texturePosition)
+	public Mesh(String name, float[] vertexPosition, float[] vertexColor, Material material, float[] texturePosition)
 	{
 		this.vertexPosition = vertexPosition;
 		this.vertexColor = vertexColor;
 		this.material = material;
 		this.texturePosition = texturePosition;
+		this.numberOfVertices = vertexPosition.length;
 	}
 	
-	public ModelData(ModelData modelData)
+	public Mesh(Mesh mesh)
 	{
-		this.vertexPosition = modelData.getPositionData();
-		this.vertexColor = modelData.getColorData();
-		this.material = modelData.getMaterial();
-		this.texturePosition = modelData.getTexturePosition();
+		this.vertexPosition = mesh.getPositionData();
+		this.vertexColor = mesh.getColorData();
+		this.material = mesh.getMaterial();
+		this.texturePosition = mesh.getTexturePosition();
 	}
 	
 	public String getName()

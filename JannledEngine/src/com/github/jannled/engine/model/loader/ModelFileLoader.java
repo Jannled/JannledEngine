@@ -33,7 +33,7 @@ public class ModelFileLoader
 	public float[] getVertexData(String[] text, String lookup)
 	{
 		int numLines = text.length;
-		float[] output = new float[numLines];
+		float[] output = new float[numLines*3];
 		
 		int index = 0;
 		for(int i=0; i<numLines; i++)
@@ -41,7 +41,8 @@ public class ModelFileLoader
 			String line = text[i];
 			
 			//Check if line begins with lookup 
-			if(line.substring(0, line.toCharArray().length).equals(lookup + " "))
+			String substring = line.substring(0, lookup.toCharArray().length+1);
+			if(substring.equals(lookup + " "))
 			{
 				String[] data = line.split(" ");
 				float x = 0.0F;

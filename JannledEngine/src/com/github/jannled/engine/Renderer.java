@@ -2,7 +2,10 @@ package com.github.jannled.engine;
 
 import java.io.File;
 
+import com.github.jannled.engine.model.Model;
 import com.github.jannled.engine.model.loader.ModelLoader;
+import com.github.jannled.engine.scenegraph.Scene;
+import com.github.jannled.engine.scenegraph.SceneObject;
 import com.github.jannled.engine.shaders.ShaderLoader;
 import com.github.jannled.lib.Print;
 import com.jogamp.common.nio.Buffers;
@@ -40,6 +43,8 @@ public class Renderer implements GLEventListener
 	ModelLoader modelLoader;
 	ShaderLoader shaderLoader;
 	
+	Scene scene = new Scene("Hauptscene");
+	
 	public Renderer(int width, int heigth, int fps)
 	{
 		Print.m("Preparing renderer. Resolution: " + width + "x" + height + ". FPS: " + fps + ".");
@@ -71,7 +76,6 @@ public class Renderer implements GLEventListener
 		animator = new FPSAnimator(canvas, fps);
 		animator.start();
 		
-		Print.m("?!");
 		setupModels();
 		setupShaders();
 	}
@@ -91,8 +95,20 @@ public class Renderer implements GLEventListener
 	{
 		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		
-		gl.glBindVertexArray(1);
-		gl.glDrawArrays(GL4.GL_TRIANGLES, 0, 3);
+		for(SceneObject sceneObject : scene.getObjects())
+		{
+			if(sceneObject instanceof Model)
+			{
+				Model model = (Model) sceneObject;
+				gl.glBindVertexArray(model.getVAO());
+				gl.glDrawArrays(GL4.GL_TRIANGLES, 0, model.getMesh().getVerticeCount());
+			}
+			else
+			{
+				Print.e("Found an unsupported Object in the SceneGraph!");
+			}
+		}
+		
 		gl.glFlush();
 	}
 	
@@ -108,14 +124,14 @@ public class Renderer implements GLEventListener
 	{
 		Print.m("Loading Models...");
 		modelLoader = new ModelLoader(gl);
-		modelLoader.load(new File("src/Suzanna.obj"));
+		scene.addToScene(modelLoader.load(new File("src/com/github/jannled/engine/assets/models/Suzanne.obj")));
 	}
 	
 	public void setupShaders()
 	{
 		Print.m("Loading Shaders...");
 		shaderLoader = new ShaderLoader(gl);
-		shaderLoader.loadShaders("/com/github/jannled/engine/shaders/VertexShader.glsl", "/com/github/jannled/engine/shaders/FragmentShader.glsl");	
+		shaderLoader.loadShaders("/com/github/jannled/engine/shaders/VertexShader.glsl", "/com/github/jannled/engine/shaders/FragmentShader.glsl");
 	}
 	
 	/**

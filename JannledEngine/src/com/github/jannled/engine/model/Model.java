@@ -1,23 +1,39 @@
 package com.github.jannled.engine.model;
 
-public class Model extends ModelData
+import com.github.jannled.engine.maths.Vector3f;
+import com.github.jannled.engine.scenegraph.SceneObject;
+
+public class Model extends SceneObject
 {
 	private int vaoID;
+	private Mesh mesh;
+	private Vector3f position;
 	
-	public Model(int vaoID, ModelData modelData)
+	public Model(int vaoID, Mesh mesh)
 	{
-		super(modelData);
+		this.mesh = mesh;
+		position = new Vector3f(0f, 0f, 0f);
 		this.vaoID = vaoID;
 	}
 	
 	public Model(int vaoID, String name, float[] positionData, float[] colorData, Material material, float[] textureCoordinates)
 	{
-		super(name, positionData, colorData, material, textureCoordinates);
+		mesh = new Mesh(name, positionData, colorData, material, textureCoordinates);
 		this.vaoID = vaoID;
 	}
 	
 	public int getVAO()
 	{
 		return vaoID;
+	}
+	
+	public Mesh getMesh()
+	{
+		return mesh;
+	}
+	
+	public Vector3f getPosition()
+	{
+		return position;
 	}
 }

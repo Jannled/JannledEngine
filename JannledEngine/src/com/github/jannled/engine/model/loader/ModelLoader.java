@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import java.util.Vector;
 
 import com.github.jannled.engine.constants.OBJ;
+import com.github.jannled.engine.constants.VAO;
 import com.github.jannled.engine.model.Material;
 import com.github.jannled.engine.model.Model;
 import com.github.jannled.lib.FileUtils;
@@ -20,7 +21,7 @@ import com.jogamp.opengl.GL4;
 public class ModelLoader
 {
 	GL4 gl;
-	ModelFileLoader fileLoader;
+	ModelFileLoader fileLoader = new ModelFileLoader();
 	private Vector<Integer> vaos = new Vector<Integer>();
 	private Vector<Integer> vbos = new Vector<Integer>();
 	
@@ -38,7 +39,7 @@ public class ModelLoader
 		}
 		else 
 		{
-			Print.e("Unable to find model file " + file + "!");
+			Print.e("Unable to find model file " + file.getAbsolutePath() + "!");
 			return null;
 		}
 	}
@@ -52,7 +53,7 @@ public class ModelLoader
 		float[] textureCoords = fileLoader.getVertexData(text, OBJ.TEXTURECOORDINATE);
 		
 		int[] vbos = {createVBO(vertexData), createVBO(colorData)};
-		int vaoID = createVAO(vbos, new int[] {0});
+		int vaoID = createVAO(vbos, new int[] {VAO.POSITION_INDEX, VAO.COLOR_INDEX});
 		Model model = new Model(vaoID, name, vertexData, colorData, material, textureCoords);
 		return model;
 	}
