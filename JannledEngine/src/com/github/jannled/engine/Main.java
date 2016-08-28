@@ -39,6 +39,7 @@ public class Main
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.addWindowListener( new WindowAdapter() 
 		{
+			@Override
 			public void windowClosing( WindowEvent windowevent ) 
 			{
 				Print.m("Cleaning Window.");

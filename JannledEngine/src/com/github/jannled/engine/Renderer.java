@@ -71,6 +71,7 @@ public class Renderer implements GLEventListener
 		animator = new FPSAnimator(canvas, fps);
 		animator.start();
 		
+		Print.m("?!");
 		setupModels();
 		setupShaders();
 	}
@@ -99,18 +100,20 @@ public class Renderer implements GLEventListener
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) 
 	{
 		Print.m("Window size changed to " + width + "x" + height + ".");
-		gl.glViewport(0, 0, width, height);
-		glu.gluPerspective(60, width/height, 0.1, 100);		
+		//gl.glViewport(0, 0, width, height);
+		//glu.gluPerspective(60, width/height, 0.1, 100);		
 	}
 	
 	public void setupModels()
 	{
+		Print.m("Loading Models...");
 		modelLoader = new ModelLoader(gl);
 		modelLoader.load(new File("src/Suzanna.obj"));
 	}
 	
 	public void setupShaders()
 	{
+		Print.m("Loading Shaders...");
 		shaderLoader = new ShaderLoader(gl);
 		shaderLoader.loadShaders("/com/github/jannled/engine/shaders/VertexShader.glsl", "/com/github/jannled/engine/shaders/FragmentShader.glsl");	
 	}
