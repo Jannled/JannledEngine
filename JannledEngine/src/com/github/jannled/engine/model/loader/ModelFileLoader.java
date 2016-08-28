@@ -12,11 +12,6 @@ public class ModelFileLoader
 		
 	}
 	
-	public float[] load(String file, String lookup)
-	{
-		
-	}
-	
 	/**
 	 * Reads the text-file containing the model information to a String-Array
 	 * @param file The file to read.
