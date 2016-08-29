@@ -30,6 +30,7 @@ public class Renderpipeline
 			{
 				Model model = (Model) sceneObject;
 				gl.glBindVertexArray(model.getVAO());
+				gl.glDrawElements(GL4.GL_TRIANGLES, model.getMesh().getIndices().length, GL4.GL_INT, 0);
 			}
 			else
 			{
