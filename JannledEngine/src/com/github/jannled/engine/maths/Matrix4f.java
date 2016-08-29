@@ -149,7 +149,6 @@ public class Matrix4f
 	}
 	
 	/**
-	 * 
 	 * @return A Floatbuffer with the matrix in it.
 	 */
 	public FloatBuffer toFloatBuffer()

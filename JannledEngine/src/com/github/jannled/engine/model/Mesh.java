@@ -6,14 +6,16 @@ public class Mesh
 	
 	private int numberOfVertices;
 	private float[] vertexPosition;
+	private int[] indices;
 	private float[] vertexColor;
 	
 	private Material material;
 	private float[] texturePosition;
 	
-	public Mesh(String name, float[] vertexPosition, float[] vertexColor, Material material, float[] texturePosition)
+	public Mesh(String name, float[] vertexPosition, int[] indices, float[] vertexColor, Material material, float[] texturePosition)
 	{
 		this.vertexPosition = vertexPosition;
+		this.indices = indices;
 		this.vertexColor = vertexColor;
 		this.material = material;
 		this.texturePosition = texturePosition;
@@ -36,6 +38,11 @@ public class Mesh
 	public float[] getPositionData()
 	{
 		return vertexPosition;
+	}
+	
+	public int[] getIndices()
+	{
+		return indices;
 	}
 	
 	public float[] getColorData()

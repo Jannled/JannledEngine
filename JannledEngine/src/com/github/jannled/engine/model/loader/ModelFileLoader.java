@@ -88,6 +88,64 @@ public class ModelFileLoader
 	 * @param lookup A single charackter. Here are some examples for .obj <table> <tr> <td>o</td> <td>Object name</td> </tr> <tr> <td>v</td> <td>Vertex Position</td> </table>
 	 * @return The three floats for each line beginning with the lookup.
 	 */
+	public int[] getIndexData(String[] text, String lookup)
+	{
+		int numLines = text.length;
+		int[] output = new int[numLines*3];
+		
+		int index = 0;
+		for(int i=0; i<numLines; i++)
+		{
+			String line = text[i];
+			
+			//Check if line begins with lookup 
+			String substring = line.substring(0, lookup.toCharArray().length+1);
+			if(substring.equals(lookup + " "))
+			{
+				String[] data = line.split(" ");
+				int x = 0;
+				int y = 0;
+				int z = 0;
+				
+				//Check if line contains 3 Vertice Data
+				if(data.length != 4)
+					Print.e("Unsupported number of elements in this line " + (data.length-1) + "/3!");
+				try 
+				{
+					x = Integer.parseInt(data[1]);
+					y = Integer.parseInt(data[2]);
+					z = Integer.parseInt(data[3]);
+				}
+				//Check if element is a valid number
+				catch(NumberFormatException e) 
+				{
+					Print.e("Unnsoported " + lookup + " float in line " + i + "!");
+				}
+				//Append the vertices to the output
+				output[index] = x;
+				output[index+1] = y;
+				output[index+2] = z;
+				index = index+3;
+			}
+		}
+		//Strip the array to the actual size
+		int[] buffer = output;
+		output = new int[index+1];
+		for(int i=0; i<index+1; i++)
+		{
+			output[i] = buffer[i];
+		}
+			
+		return output;
+	}
+	
+	/**
+	 * Searches if the line begins with the specified lookup, like so: <br>
+	 * v 1.0 1.0 1.0  | then lookup will be v
+	 * @param text The text to analyse for the lookup.
+	 * @param lookup A single charackter. Here are some examples for .obj <table> <tr> <td>o</td> <td>Object name</td> </tr> <tr> <td>v</td> <td>Vertex Position</td> </table>
+	 * @return The three floats for each line beginning with the lookup.
+	 */
 	public String[] getData(String[] text, String lookup)
 	{
 		int numLines = text.length;

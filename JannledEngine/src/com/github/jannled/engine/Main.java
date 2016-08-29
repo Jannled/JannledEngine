@@ -17,7 +17,7 @@ import com.github.jannled.lib.Print;
  */
 public class Main 
 {
-	Renderer renderer = new Renderer(1280, 720, 60);
+	Renderer renderer = new Renderer(this, 1280, 720, 60);
 	
 	JFrame window = new JFrame("Jannled Engine");
 	

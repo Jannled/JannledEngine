@@ -2,10 +2,8 @@ package com.github.jannled.engine;
 
 import java.io.File;
 
-import com.github.jannled.engine.model.Model;
 import com.github.jannled.engine.model.loader.ModelLoader;
 import com.github.jannled.engine.scenegraph.Scene;
-import com.github.jannled.engine.scenegraph.SceneObject;
 import com.github.jannled.engine.shaders.ShaderLoader;
 import com.github.jannled.lib.Print;
 import com.jogamp.common.nio.Buffers;
@@ -16,7 +14,6 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -29,11 +26,12 @@ import com.jogamp.opengl.util.FPSAnimator;
  */
 public class Renderer implements GLEventListener
 {
+	Main main;
+	
 	final GLProfile profile = GLProfile.get("GL2");
 	final GLCapabilities capabilities = new GLCapabilities(profile);
 	final GLCanvas canvas = new GLCanvas(capabilities);
 	GL4 gl;
-	GLU glu;
 	
 	int width = 1280;
 	int height = 720;
@@ -42,12 +40,14 @@ public class Renderer implements GLEventListener
 	FPSAnimator animator;
 	ModelLoader modelLoader;
 	ShaderLoader shaderLoader;
+	Renderpipeline renderpipeline;
 	
 	Scene scene = new Scene("Hauptscene");
 	
-	public Renderer(int width, int heigth, int fps)
+	public Renderer(Main main, int width, int heigth, int fps)
 	{
 		Print.m("Preparing renderer. Resolution: " + width + "x" + height + ". FPS: " + fps + ".");
+		this.main = main;
 		this.width = width;
 		this.height = heigth;
 		this.fps = fps;
@@ -60,7 +60,7 @@ public class Renderer implements GLEventListener
 	{
 		Print.m("Initlialising OpenGL Canvas.");
 		gl = drawable.getGL().getGL4();
-		glu = new GLU();
+		renderpipeline = new Renderpipeline(gl);
 		
 		//Print some debug stuff about the system
 		Print.m("Operating System: " + System.getProperty("os.name"));
@@ -93,31 +93,14 @@ public class Renderer implements GLEventListener
 	@Override
 	public void display(GLAutoDrawable drawable) 
 	{
-		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
-		
-		for(SceneObject sceneObject : scene.getObjects())
-		{
-			if(sceneObject instanceof Model)
-			{
-				Model model = (Model) sceneObject;
-				gl.glBindVertexArray(model.getVAO());
-				gl.glDrawArrays(GL4.GL_TRIANGLES, 0, model.getMesh().getVerticeCount());
-			}
-			else
-			{
-				Print.e("Found an unsupported Object in the SceneGraph!");
-			}
-		}
-		
-		gl.glFlush();
+		//Main.window.setTitle("Modelgame " + animator.getLastFPS() + "FPS");
+		renderpipeline.renderFrame(scene);
 	}
 	
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) 
 	{
 		Print.m("Window size changed to " + width + "x" + height + ".");
-		//gl.glViewport(0, 0, width, height);
-		//glu.gluPerspective(60, width/height, 0.1, 100);		
 	}
 	
 	public void setupModels()

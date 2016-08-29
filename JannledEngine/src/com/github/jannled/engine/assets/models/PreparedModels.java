@@ -1,4 +1,4 @@
-package com.github.jannled.engine;
+package com.github.jannled.engine.assets.models;
 
 public class PreparedModels
 {

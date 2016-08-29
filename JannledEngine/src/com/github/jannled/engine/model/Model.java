@@ -16,9 +16,9 @@ public class Model extends SceneObject
 		this.vaoID = vaoID;
 	}
 	
-	public Model(int vaoID, String name, float[] positionData, float[] colorData, Material material, float[] textureCoordinates)
+	public Model(int vaoID, String name, float[] positionData, int[] indicesData, float[] colorData, Material material, float[] textureCoordinates)
 	{
-		mesh = new Mesh(name, positionData, colorData, material, textureCoordinates);
+		mesh = new Mesh(name, positionData, indicesData, colorData, material, textureCoordinates);
 		this.vaoID = vaoID;
 	}
 	

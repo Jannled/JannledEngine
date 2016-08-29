@@ -2,6 +2,7 @@ package com.github.jannled.engine.model.loader;
 
 import java.io.File;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.Vector;
 
 import com.github.jannled.engine.constants.OBJ;
@@ -48,13 +49,14 @@ public class ModelLoader
 	{
 		String name = fileLoader.getData(text, OBJ.NAME)[0];
 		float[] vertexData = fileLoader.getVertexData(text, OBJ.VERTICE);
+		int[] indiceData = fileLoader.getIndexData(text, OBJ.FACE);
 		float[] colorData = new float[vertexData.length];
 		Material material = new Material("Random");
 		float[] textureCoords = fileLoader.getVertexData(text, OBJ.TEXTURECOORDINATE);
 		
-		int[] vbos = {createVBO(vertexData), createVBO(colorData)};
-		int vaoID = createVAO(vbos, new int[] {VAO.POSITION_INDEX, VAO.COLOR_INDEX});
-		Model model = new Model(vaoID, name, vertexData, colorData, material, textureCoords);
+		int[] vbos = {createVBO(vertexData), createIBO(indiceData), createVBO(colorData)};
+		int vaoID = createVAO(vbos, new int[] {VAO.POSITION_INDEX, VAO.INDEXBUFFER_INDEX, VAO.COLOR_INDEX});
+		Model model = new Model(vaoID, name, vertexData, indiceData, colorData, material, textureCoords);
 		return model;
 	}
 	
@@ -69,6 +71,16 @@ public class ModelLoader
 		vbos.add(vbo[0]);
 		Print.m("Created VBO ID " + vbo[0] + ".");
 		return vbo[0];
+	}
+	
+	public int createIBO(int[] data)
+	{
+		int[] ibo = new int[1];
+		long len = data.length;
+		gl.glGenBuffers(1, ibo, 0);
+		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
+		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, len, loadToBuffer(data), GL4.GL_STATIC_DRAW);
+		return ibo[0];
 	}
 	
 	/**
@@ -100,6 +112,17 @@ public class ModelLoader
 	public FloatBuffer loadToBuffer(float[] data)
 	{
 		FloatBuffer buffer = Buffers.newDirectFloatBuffer(data);
+		return buffer;
+	}
+	
+	/**
+	 * Load the int-array of positions to a float-buffer
+	 * @param data
+	 * @return
+	 */
+	public IntBuffer loadToBuffer(int[] data)
+	{
+		IntBuffer buffer = Buffers.newDirectIntBuffer(data);
 		return buffer;
 	}
 	
