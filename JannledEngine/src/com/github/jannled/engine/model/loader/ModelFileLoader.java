@@ -51,7 +51,7 @@ public class ModelFileLoader
 				
 				//Check if line contains 3 Vertice Data
 				if(data.length != 4)
-					Print.e("Unsupported number of elements in this line " + (data.length-1) + "/3!");
+					Print.e("Unsupported number of elements in line " + i+1 + " " + (data.length-1) + "/3!");
 				try 
 				{
 					x = Float.parseFloat(data[1]);
@@ -61,7 +61,7 @@ public class ModelFileLoader
 				//Check if element is a valid number
 				catch(NumberFormatException e) 
 				{
-					Print.e("Unnsoported " + lookup + " float in line " + i + "!");
+					Print.e("Unnsoported " + lookup + " float in line " + i+1 + "!");
 				}
 				//Append the vertices to the output
 				output[index] = x;
@@ -88,7 +88,7 @@ public class ModelFileLoader
 	 * @param lookup A single charackter. Here are some examples for .obj <table> <tr> <td>o</td> <td>Object name</td> </tr> <tr> <td>v</td> <td>Vertex Position</td> </table>
 	 * @return The three floats for each line beginning with the lookup.
 	 */
-	public int[] getIndexData(String[] text, String lookup)
+	public int[] getIndiceData(String[] text, String lookup)
 	{
 		int numLines = text.length;
 		int[] output = new int[numLines*3];
@@ -103,28 +103,28 @@ public class ModelFileLoader
 			if(substring.equals(lookup + " "))
 			{
 				String[] data = line.split(" ");
-				int x = 0;
-				int y = 0;
-				int z = 0;
+				int a = 0;
+				int b = 0;
+				int c = 0;
 				
 				//Check if line contains 3 Vertice Data
 				if(data.length != 4)
-					Print.e("Unsupported number of elements in this line " + (data.length-1) + "/3!");
+					Print.e("Unsupported number of elements in line " + i+1 + " " + (data.length-1) + "/3!");
 				try 
 				{
-					x = Integer.parseInt(data[1]);
-					y = Integer.parseInt(data[2]);
-					z = Integer.parseInt(data[3]);
+					a = Integer.parseInt(data[1].split("//")[0]);
+					b = Integer.parseInt(data[2].split("//")[0]);
+					c = Integer.parseInt(data[3].split("//")[0]);
 				}
 				//Check if element is a valid number
 				catch(NumberFormatException e) 
 				{
-					Print.e("Unnsoported " + lookup + " float in line " + i + "!");
+					Print.e("Unnsoported " + lookup + " int in line " + i+1 + "!");
 				}
-				//Append the vertices to the output
-				output[index] = x;
-				output[index+1] = y;
-				output[index+2] = z;
+				//Append indices to the output
+				output[index] = a-1;
+				output[index+1] = b-1;
+				output[index+2] = c-1;
 				index = index+3;
 			}
 		}
@@ -164,7 +164,7 @@ public class ModelFileLoader
 				
 				//Check if line contains 1 String Data
 				if(data.length != 2)
-					Print.e("Unsupported number of elements in this line " + (data.length-1) + "/1!");
+					Print.e("Unsupported number of elements in line " + i+1 + " " + (data.length-1) + "/1!");
 				
 				//Append the vertices to the output
 				output[index] = s;

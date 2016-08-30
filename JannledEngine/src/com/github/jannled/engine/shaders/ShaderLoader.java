@@ -1,6 +1,8 @@
 package com.github.jannled.engine.shaders;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -31,32 +33,22 @@ public class ShaderLoader
 		Print.m("Done! Created Shader Program ID " + shaderProgramID + ".");
 	}
 	
-	public String readFromFile(String file)
+	public String readFromFile(String filePath)
 	{
-		String s = File.separator;
-		String replace = s;
-		if(s.equals("\\"))
-			replace = "\\\\";
-		String path = file.replaceAll("/", replace);
-		
-		File shaderFile = new File("." + path);
-		
-		//Check if still in Workspace
-		if(!shaderFile.exists())
+		URL uri = ShaderLoader.class.getResource(filePath);
+		File file;
+		try
 		{
-			Print.m("Still in WorkSpace!");
-			path = s + "src" + path;
-			shaderFile = new File("." + path);
-			if(!shaderFile.exists())
-			{
-				Print.e("Still couldn't find file " + path + ".");
-				System.exit(1);
-			}
+			file = new File(uri.toURI());
+			Print.m("Loading Shader " + file.getAbsolutePath() + ".");
+			String output = FileUtils.readTextFileN(file);
+			return output;
+		} catch (URISyntaxException e)
+		{
+			Print.e("Invalid URI " + uri.toString());
+			e.printStackTrace();
 		}
-		
-		Print.m("Loading Shader " + path + ".");
-		String output = FileUtils.readTextFileN(shaderFile);
-		return output;
+		return null;
 	}
 	
 	public int loadShader(int type, String file)

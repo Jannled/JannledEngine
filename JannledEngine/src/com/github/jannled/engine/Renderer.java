@@ -93,7 +93,6 @@ public class Renderer implements GLEventListener
 	@Override
 	public void display(GLAutoDrawable drawable) 
 	{
-		//Main.window.setTitle("Modelgame " + animator.getLastFPS() + "FPS");
 		renderpipeline.renderFrame(scene);
 	}
 	
@@ -107,6 +106,7 @@ public class Renderer implements GLEventListener
 	{
 		Print.m("Loading Models...");
 		modelLoader = new ModelLoader(gl);
+		scene.addToScene(modelLoader.load(new File("src/com/github/jannled/engine/assets/models/Suzanne.obj")));
 		scene.addToScene(modelLoader.load(new File("src/com/github/jannled/engine/assets/models/Suzanne.obj")));
 	}
 	

@@ -49,14 +49,15 @@ public class ModelLoader
 	{
 		String name = fileLoader.getData(text, OBJ.NAME)[0];
 		float[] vertexData = fileLoader.getVertexData(text, OBJ.VERTICE);
-		int[] indiceData = fileLoader.getIndexData(text, OBJ.FACE);
+		int[] indiceData = fileLoader.getIndiceData(text, OBJ.FACE);
 		float[] colorData = new float[vertexData.length];
 		Material material = new Material("Random");
 		float[] textureCoords = fileLoader.getVertexData(text, OBJ.TEXTURECOORDINATE);
 		
-		int[] vbos = {createVBO(vertexData), createIBO(indiceData), createVBO(colorData)};
-		int vaoID = createVAO(vbos, new int[] {VAO.POSITION_INDEX, VAO.INDEXBUFFER_INDEX, VAO.COLOR_INDEX});
-		Model model = new Model(vaoID, name, vertexData, indiceData, colorData, material, textureCoords);
+		int[] vbos = {createVBO(vertexData), createVBO(colorData)};
+		int ibo = createIBO(indiceData);
+		int vaoID = createVAO(vbos, new int[] {VAO.POSITION_INDEX, VAO.COLOR_INDEX});
+		Model model = new Model(vaoID, ibo, name, vertexData, indiceData, colorData, material, textureCoords);
 		return model;
 	}
 	
@@ -80,6 +81,7 @@ public class ModelLoader
 		gl.glGenBuffers(1, ibo, 0);
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
 		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, len, loadToBuffer(data), GL4.GL_STATIC_DRAW);
+		Print.m("Created IBO ID " + ibo[0] + ".");
 		return ibo[0];
 	}
 	
@@ -101,6 +103,7 @@ public class ModelLoader
 			gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, vbos[i]);
 			gl.glVertexAttribPointer(positionIndex[i], 3, GL4.GL_FLOAT, false, 0, 0);
 		}
+		gl.glBindVertexArray(0);
 		return vao[0];
 	}
 	

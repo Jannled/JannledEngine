@@ -1,5 +1,6 @@
 package com.github.jannled.engine;
 
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -31,6 +32,7 @@ public class Main
 	{
 		window.getContentPane().add(renderer.getGLCanvas());
 		window.pack();
+		window.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/com/github/jannled/engine/assets/images/logo.png")));
 		window.setVisible(true);
 	}
 	

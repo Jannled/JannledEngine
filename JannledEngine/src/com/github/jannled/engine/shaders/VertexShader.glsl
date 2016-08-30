@@ -1,12 +1,12 @@
 #version 400
 
-layout (location = 0) in vec3 vertexPositions;
-layout (location = 0) in vec3 vertexColor;
+in vec3 vertexPositions;
+in vec3 vertexColor;
 
-out vec3 color;
+out vec3 fragColour;
 
 void main() 
 {
-	color = vertexColor;
+	fragColour = vertexColor;
 	gl_Position = vec4(vertexPositions, 1.0);
 }
