@@ -5,6 +5,11 @@ import java.io.File;
 import com.github.jannled.lib.FileUtils;
 import com.github.jannled.lib.Print;
 
+/**
+ * 
+ * @author Jannled
+ * @version 0.0.1
+ */
 public class ModelFileLoader
 {
 	public ModelFileLoader()

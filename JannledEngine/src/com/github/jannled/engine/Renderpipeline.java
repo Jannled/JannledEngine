@@ -1,24 +1,31 @@
 package com.github.jannled.engine;
 
+import com.github.jannled.engine.gui.GUIManager;
 import com.github.jannled.engine.model.Model;
 import com.github.jannled.engine.scenegraph.Scene;
 import com.github.jannled.engine.scenegraph.SceneObject;
 import com.github.jannled.lib.Print;
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.awt.GLCanvas;
 
 public class Renderpipeline
 {
 	GL4 gl;
+	GLCanvas canvas;
+	GUIManager guiManager;
 	
-	public Renderpipeline(GL4 gl)
+	public Renderpipeline(Renderer renderer)
 	{
-		this.gl = gl;
+		this.gl = renderer.getGL();
+		this.canvas = renderer.getGLCanvas();
+		this.guiManager = new GUIManager(canvas);
 	}
 	
 	public void renderFrame(Scene scene)
 	{
 		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		drawScene(scene);
+		guiManager.draw();
 		gl.glFlush();
 	}
 	
@@ -31,7 +38,7 @@ public class Renderpipeline
 				Model model = (Model) sceneObject;
 				gl.glBindVertexArray(model.getVAO());
 				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, model.getIndiceID());
-				gl.glDrawElements(GL4.GL_TRIANGLES, model.getMesh().getIndices().length, GL4.GL_INT, 0);
+				gl.glDrawElements(GL4.GL_TRIANGLES, model.getMesh().getIndices().length, GL4.GL_UNSIGNED_INT, 0);
 			}
 			else
 			{

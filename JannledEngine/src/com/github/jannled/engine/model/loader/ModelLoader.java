@@ -15,9 +15,9 @@ import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 
 /**
- * 
+ * Class for loading models into memory
  * @author Jannled
- * @version 0.0.1
+ * @version 0.0.2
  */
 public class ModelLoader
 {
@@ -49,8 +49,8 @@ public class ModelLoader
 	{
 		String name = fileLoader.getData(text, OBJ.NAME)[0];
 		float[] vertexData = fileLoader.getVertexData(text, OBJ.VERTICE);
-		int[] indiceData = fileLoader.getIndiceData(text, OBJ.FACE);
 		float[] colorData = new float[vertexData.length];
+		int[] indiceData = fileLoader.getIndiceData(text, OBJ.FACE);
 		Material material = new Material("Random");
 		float[] textureCoords = fileLoader.getVertexData(text, OBJ.TEXTURECOORDINATE);
 		
@@ -136,5 +136,15 @@ public class ModelLoader
 	public Vector<Integer> getVAOS()
 	{
 		return vaos;
+	}
+	
+	public float[] generateColors(int len)
+	{
+		float[] colors = new float[len];
+		for(int i=0; i<len; i++)
+		{
+			colors[i] = 0.0F;
+		}
+		return colors;
 	}
 }

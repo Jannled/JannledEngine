@@ -25,7 +25,6 @@ public class Main
 	public Main()
 	{
 		setupWindow();
-		setupCloseEvent();
 	}
 	
 	public void setupWindow()
@@ -34,6 +33,7 @@ public class Main
 		window.pack();
 		window.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/com/github/jannled/engine/assets/images/logo.png")));
 		window.setVisible(true);
+		setupCloseEvent();
 	}
 	
 	public void setupCloseEvent()
@@ -55,5 +55,10 @@ public class Main
 	{
 		Print.m("Starting JannledEngine with following parameters: " + ArrayUtils.arrayToString(args) + ".");
 		new Main();
+	}
+	
+	public void setWindowTitle(String title)
+	{
+		window.setTitle(title);
 	}
 }
