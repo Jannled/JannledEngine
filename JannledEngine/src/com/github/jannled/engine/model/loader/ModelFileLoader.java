@@ -108,25 +108,25 @@ public class ModelFileLoader
 			if(substring.equals(lookup + " "))
 			{
 				String[] data = line.split(" ");
-				int a = 0;
-				int b = 0;
-				int c = 0;
+				short a = 0;
+				short b = 0;
+				short c = 0;
 				
 				//Check if line contains 3 Vertice Data
 				if(data.length != 4)
 					Print.e("Unsupported number of elements in line " + i+1 + " " + (data.length-1) + "/3!");
-				try 
+				try
 				{
-					a = Integer.parseInt(data[1].split("//")[0]);
-					b = Integer.parseInt(data[2].split("//")[0]);
-					c = Integer.parseInt(data[3].split("//")[0]);
+					a = (short) Float.parseFloat(data[1].split("//")[0]);
+					b = (short) Float.parseFloat(data[2].split("//")[0]);
+					c = (short) Float.parseFloat(data[3].split("//")[0]);
 				}
 				//Check if element is a valid number
 				catch(NumberFormatException e) 
 				{
-					Print.e("Unnsoported " + lookup + " int in line " + (i+1) + "!");
-				}Print.m("Current line " + (i+1));
-				//Append indices to the output
+					Print.e("Unnsoported " + lookup + " float in line " + i+1 + "!");
+				}
+				//Append the vertices to the output
 				output[index] = (short) (a-1);
 				output[index+1] = (short) (b-1);
 				output[index+2] = (short) (c-1);
@@ -140,7 +140,7 @@ public class ModelFileLoader
 		{
 			output[i] = buffer[i];
 		}
-		
+			
 		return output;
 	}
 	
@@ -169,7 +169,7 @@ public class ModelFileLoader
 				
 				//Check if line contains 1 String Data
 				if(data.length != 2)
-					Print.e("Unsupported number of elements in line " + i+1 + " " + (data.length-1) + "/1!");
+					Print.e("Unsupported number of elements in line " + (i+1) + " " + (data.length-1) + "/1!");
 				
 				//Append the vertices to the output
 				output[index] = s;

@@ -17,7 +17,7 @@ public class GUIManager
 		if(showFPS) canvas.getGraphics().drawString((int)canvas.getAnimator().getLastFPS() + "FPS", canvas.getWidth()-40, 10);
 	}
 	
-	public void showFPS(boolean fps)
+	public void showDebug(boolean fps)
 	{
 		this.showFPS = fps;
 	}

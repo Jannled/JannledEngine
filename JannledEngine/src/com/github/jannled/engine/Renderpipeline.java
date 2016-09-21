@@ -25,8 +25,8 @@ public class Renderpipeline
 	{
 		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		drawScene(scene);
-		guiManager.draw();
 		gl.glFlush();
+		guiManager.draw();
 	}
 	
 	public void drawScene(Scene scene)
