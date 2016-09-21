@@ -2,7 +2,7 @@ package com.github.jannled.engine;
 
 import java.io.File;
 
-import com.github.jannled.engine.hid.KeyboardListener;
+import com.github.jannled.engine.hid.InputHandler;
 import com.github.jannled.engine.model.loader.ModelLoader;
 import com.github.jannled.engine.scenegraph.Scene;
 import com.github.jannled.engine.shaders.ShaderLoader;
@@ -42,7 +42,7 @@ public class Renderer implements GLEventListener
 	ModelLoader modelLoader;
 	ShaderLoader shaderLoader;
 	Renderpipeline renderpipeline;
-	KeyboardListener keyboardListener;
+	InputHandler inputHandler;
 	
 	Scene scene = new Scene("Hauptscene");
 	
@@ -78,7 +78,7 @@ public class Renderer implements GLEventListener
 		gl.glEnable(GL4.GL_MULTISAMPLE);
 		
 		//Setup input listener
-		keyboardListener = new KeyboardListener(this);
+		inputHandler = new InputHandler(canvas);
 		
 		animator = new FPSAnimator(canvas, fps);
 		animator.start();
@@ -115,7 +115,6 @@ public class Renderer implements GLEventListener
 		Print.m("Loading Models...");
 		modelLoader = new ModelLoader(gl);
 		scene.addToScene(modelLoader.load(new File("src/com/github/jannled/engine/assets/models/Suzanne.obj")));
-		//scene.addToScene(modelLoader.load(new File("src/com/github/jannled/engine/assets/models/Suzanne.obj")));
 	}
 	
 	public void setupShaders()
@@ -139,6 +138,11 @@ public class Renderer implements GLEventListener
 	public GL4 getGL()
 	{
 		return gl;
+	}
+	
+	public Main getMain()
+	{
+		return main;
 	}
 	
 }

@@ -7,7 +7,9 @@ package com.github.jannled.engine.maths;
  */
 public class Vector3f 
 {
-	public float x, y, z;
+	float x;
+	float y;
+	float z;
 	
 	public Vector3f()
 	{
@@ -20,5 +22,25 @@ public class Vector3f
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	public float[] getVector()
+	{
+		return new float[] {x, y, z};
+	}
+	
+	public float getX()
+	{
+		return x;
+	}
+	
+	public float getY()
+	{
+		return y;
+	}
+	
+	public float getZ()
+	{
+		return z;
 	}
 }

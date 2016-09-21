@@ -50,7 +50,7 @@ public class ModelLoader
 		String name = fileLoader.getData(text, OBJ.NAME)[0];
 		float[] vertexData = fileLoader.getVertexData(text, OBJ.VERTICE);
 		float[] colorData = new float[vertexData.length];
-		int[] indiceData = fileLoader.getIndiceData(text, OBJ.FACE);
+		short[] indiceData = fileLoader.getIndiceData(text, OBJ.FACE);
 		Material material = new Material("Random");
 		float[] textureCoords = fileLoader.getVertexData(text, OBJ.TEXTURECOORDINATE);
 		
@@ -74,13 +74,13 @@ public class ModelLoader
 		return vbo[0];
 	}
 	
-	public int createIBO(int[] data)
+	public int createIBO(short[] data)
 	{
 		int[] ibo = new int[1];
 		long len = data.length;
 		gl.glGenBuffers(1, ibo, 0);
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
-		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, len, loadToBuffer(data), GL4.GL_STATIC_DRAW);
+		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, len, Buffers.newDirectShortBuffer(data), GL4.GL_STATIC_DRAW);
 		Print.m("Created IBO ID " + ibo[0] + ".");
 		return ibo[0];
 	}

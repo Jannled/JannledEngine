@@ -38,7 +38,7 @@ public class Renderpipeline
 				Model model = (Model) sceneObject;
 				gl.glBindVertexArray(model.getVAO());
 				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, model.getIndiceID());
-				gl.glDrawElements(GL4.GL_TRIANGLES, model.getMesh().getIndices().length, GL4.GL_UNSIGNED_INT, 0);
+				gl.glDrawElements(GL4.GL_TRIANGLES, model.getMesh().getIndices().length, GL4.GL_UNSIGNED_SHORT, 0);
 			}
 			else
 			{

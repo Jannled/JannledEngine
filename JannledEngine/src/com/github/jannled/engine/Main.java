@@ -61,4 +61,9 @@ public class Main
 	{
 		window.setTitle(title);
 	}
+	
+	public JFrame getWindow()
+	{
+		return window;
+	}
 }

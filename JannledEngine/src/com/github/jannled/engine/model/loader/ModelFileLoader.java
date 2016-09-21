@@ -93,10 +93,10 @@ public class ModelFileLoader
 	 * @param lookup A single charackter. Here are some examples for .obj <table> <tr> <td>o</td> <td>Object name</td> </tr> <tr> <td>v</td> <td>Vertex Position</td> </table>
 	 * @return The three floats for each line beginning with the lookup.
 	 */
-	public int[] getIndiceData(String[] text, String lookup)
+	public short[] getIndiceData(String[] text, String lookup)
 	{
 		int numLines = text.length;
-		int[] output = new int[numLines*3];
+		short[] output = new short[numLines*3];
 		
 		int index = 0;
 		for(int i=0; i<numLines; i++)
@@ -124,23 +124,23 @@ public class ModelFileLoader
 				//Check if element is a valid number
 				catch(NumberFormatException e) 
 				{
-					Print.e("Unnsoported " + lookup + " int in line " + i+1 + "!");
-				}
+					Print.e("Unnsoported " + lookup + " int in line " + (i+1) + "!");
+				}Print.m("Current line " + (i+1));
 				//Append indices to the output
-				output[index] = a-1;
-				output[index+1] = b-1;
-				output[index+2] = c-1;
+				output[index] = (short) (a-1);
+				output[index+1] = (short) (b-1);
+				output[index+2] = (short) (c-1);
 				index = index+3;
 			}
 		}
 		//Strip the array to the actual size
-		int[] buffer = output;
-		output = new int[index+1];
+		short[] buffer = output;
+		output = new short[index+1];
 		for(int i=0; i<index+1; i++)
 		{
 			output[i] = buffer[i];
 		}
-			
+		
 		return output;
 	}
 	
