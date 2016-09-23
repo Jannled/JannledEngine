@@ -1,5 +1,6 @@
 package com.github.jannled.engine;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -30,6 +31,7 @@ public class Main
 	public void setupWindow()
 	{
 		window.getContentPane().add(renderer.getGLCanvas());
+		window.setMinimumSize(new Dimension(160, 90));
 		window.pack();
 		window.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/com/github/jannled/engine/assets/images/logo.png")));
 		window.setVisible(true);
@@ -51,7 +53,7 @@ public class Main
 		});
 	}
 
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
 		Print.m("Starting JannledEngine with following parameters: " + ArrayUtils.arrayToString(args) + ".");
 		new Main();

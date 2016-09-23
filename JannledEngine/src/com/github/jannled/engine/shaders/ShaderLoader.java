@@ -1,20 +1,22 @@
 package com.github.jannled.engine.shaders;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
-import com.github.jannled.lib.FileUtils;
+import com.github.jannled.engine.maths.Matrix4f;
+import com.github.jannled.engine.maths.Vector3f;
 import com.github.jannled.lib.Print;
-import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 
 public class ShaderLoader
 {
 	GL4 gl;
-	int shaderProgramID = 0;
+	
+	final String vertexShader = "/com/github/jannled/engine/shaders/VertexShader.glsl";
+	final String fragmentShader = "/com/github/jannled/engine/shaders/FragmentShader.glsl";
+	
+	Shader[] shaders;
+	Shaderprogram shaderprogram;
+	int[] matrixIDs;
 	
 	public ShaderLoader(GL4 gl4)
 	{
@@ -23,118 +25,40 @@ public class ShaderLoader
 		Print.m("Working location: " + testDefaultLoc.getAbsolutePath() + ".");
 	}
 	
-	public void loadShaders(String vertexShader, String fragmentShader)
+	public void loadShaders()
 	{
-		Print.m("Loading Shaders...");
-		int vertexShaderID = loadShader(GL4.GL_VERTEX_SHADER, vertexShader);
-		int fragmentShaderID = loadShader(GL4.GL_FRAGMENT_SHADER, fragmentShader);
-		int shaderProgramID = createProgram(vertexShaderID, fragmentShaderID);
-		gl.glUseProgram(shaderProgramID);
-		Print.m("Done! Created Shader Program ID " + shaderProgramID + ".");
+		shaders = new Shader[2];
+		shaders[0] = new Shader(gl, GL4.GL_VERTEX_SHADER, vertexShader);
+		shaders[1] = new Shader(gl, GL4.GL_FRAGMENT_SHADER, fragmentShader);
 	}
 	
-	public String readFromFile(String filePath)
+	public void createShaderProgram()
 	{
-		URL uri = ShaderLoader.class.getResource(filePath);
-		File file;
-		try
-		{
-			file = new File(uri.toURI());
-			Print.m("Loading Shader " + file.getAbsolutePath() + ".");
-			String output = FileUtils.readTextFileN(file);
-			return output;
-		} catch (URISyntaxException e)
-		{
-			Print.e("Invalid URI " + uri.toString());
-			e.printStackTrace();
-		}
-		return null;
+		matrixIDs = new int[2];
+		shaderprogram = new Shaderprogram(gl, shaders[0], shaders[1]);
+		matrixIDs[0] = createMatrix(shaderprogram.getID(), "transform");
 	}
 	
-	public int loadShader(int type, String file)
+	public int createMatrix(int shaderProgramID, String name)
 	{
-		int shaderID = gl.glCreateShader(type);
-		String[] files = {readFromFile(file)};
-		gl.glShaderSource(shaderID, 1, files, null);
-		gl.glCompileShader(shaderID);
-		getShaderErrorMsg(shaderID);
-		
-		return shaderID;
+		int handle = gl.glGetUniformLocation(shaderProgramID, name);
+		Print.m("Created Matrix ID " + handle + ".");
+		return handle;
 	}
 	
-	public int createProgram(int vertexShaderID, int fragmentShaderID)
+	public void updateMatrix(int matrixHandle, Matrix4f matrix)
 	{
-		int shaderProgramID = gl.glCreateProgram();
-		gl.glAttachShader(shaderProgramID, vertexShaderID);
-		gl.glAttachShader(shaderProgramID, fragmentShaderID);
-		gl.glLinkProgram(shaderProgramID);
-		getProgramErrorMsg(shaderProgramID);
-		gl.glValidateProgram(shaderProgramID);
-		this.shaderProgramID = shaderProgramID;
-		return shaderProgramID;
+		matrix = Matrix4f.translate(new Vector3f(0, 0, 0));
+		gl.glUniformMatrix4fv(matrixHandle, 1, true, matrix.toFloatBuffer());
 	}
 	
-	public String getShaderErrorMsg(int shaderID)
+	public Shader[] getShaders()
 	{
-		IntBuffer compilerStat = Buffers.newDirectIntBuffer(1);
-		gl.glGetShaderiv(shaderID, GL4.GL_COMPILE_STATUS, compilerStat);
-		if(compilerStat.get(0) == GL4.GL_TRUE)
-		{
-			Print.m("Shader ID " + shaderID + " compiled sucessfull.");
-		}
-		else 
-		{
-			IntBuffer errorLength = Buffers.newDirectIntBuffer(1);
-			ByteBuffer errorMsg; 
-			
-			gl.glGetShaderiv(shaderID, GL4.GL_INFO_LOG_LENGTH, errorLength);
-			errorMsg = Buffers.newDirectByteBuffer(errorLength.get(0));
-			
-			gl.glGetShaderInfoLog(shaderID, errorLength.get(0), errorLength, errorMsg);
-			
-			//Make text from bytebuffer
-			byte[] code = new byte[errorLength.get(0)];
-			for(int i=0; i<errorLength.get(0); i++)
-			{
-				code[i] = errorMsg.get(i);
-			}
-			String text = new String(code);
-			
-			Print.e("Compilation of Shader " + shaderID + " Failed with error Message: ");
-			System.err.println("	" + text);
-		}
-		return null;
+		return shaders;
 	}
 	
-	public String getProgramErrorMsg(int programID)
+	public Shaderprogram getShaderProgram()
 	{
-		IntBuffer compilerStat = Buffers.newDirectIntBuffer(1);
-		gl.glGetProgramiv(programID, GL4.GL_LINK_STATUS, compilerStat);
-		if(compilerStat.get(0) == GL4.GL_TRUE)
-		{
-			Print.m("Program ID " + programID + " linked sucessfull.");
-		}
-		else 
-		{
-			IntBuffer errorLength = Buffers.newDirectIntBuffer(1);
-			ByteBuffer errorMsg; 
-			
-			gl.glGetProgramiv(programID, GL4.GL_INFO_LOG_LENGTH, errorLength);
-			errorMsg = Buffers.newDirectByteBuffer(errorLength.get(0));
-			
-			gl.glGetProgramInfoLog(programID, errorLength.get(0), errorLength, errorMsg);
-			
-			//Make text from bytebuffer
-			byte[] code = new byte[errorLength.get(0)];
-			for(int i=0; i<errorLength.get(0); i++)
-			{
-				code[i] = errorMsg.get(i);
-			}
-			String text = new String(code);
-			
-			Print.e("Linking of Shader " + programID + " Failed with error Message: ");
-			System.err.println("	" + text);
-		}
-		return null;
+		return shaderprogram;
 	}
 }

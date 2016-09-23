@@ -4,6 +4,7 @@ import com.github.jannled.engine.gui.GUIManager;
 import com.github.jannled.engine.model.Model;
 import com.github.jannled.engine.scenegraph.Scene;
 import com.github.jannled.engine.scenegraph.SceneObject;
+import com.github.jannled.engine.shaders.ShaderLoader;
 import com.github.jannled.lib.Print;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -13,12 +14,14 @@ public class Renderpipeline
 	GL4 gl;
 	GLCanvas canvas;
 	GUIManager guiManager;
+	ShaderLoader shaderLoader;
 	
 	public Renderpipeline(Renderer renderer)
 	{
 		this.gl = renderer.getGL();
 		this.canvas = renderer.getGLCanvas();
 		this.guiManager = new GUIManager(canvas);
+		this.shaderLoader = renderer.getShaderLoader();
 	}
 	
 	public void renderFrame(Scene scene)

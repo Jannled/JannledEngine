@@ -5,9 +5,10 @@ import java.nio.FloatBuffer;
 import com.jogamp.common.nio.Buffers;
 
 /**
- * Matrix utils class
- * @author Jannled, TheChernoProject
- * @version 0.0.2
+ * Matrix utils class representing a 4x4 float Matrix
+ * @author Jannled
+ * @author TheChernoProject
+ * @version 0.0.3
  */
 public class Matrix4f 
 {
@@ -19,6 +20,11 @@ public class Matrix4f
 	{
 		for(int i=0; i < SIZE; i++)
 			this.elements[i] = 0.0F;
+	}
+	
+	public Matrix4f(float[] matrix)
+	{
+		elements = matrix;
 	}
 	
 	/**
@@ -71,17 +77,17 @@ public class Matrix4f
 	 * @param far Far Clipping Plane
 	 * @return A Matrix representing the perspective projection
 	 */
-	public static Matrix4f perspective(float left, float right, float bottom, float top, float near, float far)
+	public static Matrix4f perspective(float width, float height, float fov, float zNear, float zFar)
 	{
 		Matrix4f result = new Matrix4f();
+		float aspect = width/height; 
+		float e = (float) (1 / Math.tan(fov/2));
 		
-		result.elements[0 + 0 * 4] = (2*near) / (right-left);
-		result.elements[1 + 1 * 4] = (2*near) / (top-bottom);
-		result.elements[0 + 2 * 4] = (right+left) / (right-left);
-		result.elements[1 + 2 * 4] = (top+bottom) / (top-bottom);
-		result.elements[2 + 2 * 4] = -(far+near) / (far-near);
-		result.elements[3 + 2 * 4] = -1.0F;
-		result.elements[2 + 3 * 4] = (2*far*near) / (far-near);
+		result.elements[0] = e;
+		result.elements[5] = e/aspect;
+		result.elements[10] = -((zFar+zNear)/(zFar-zNear));
+		result.elements[11] = -((2*zFar*zNear)/(zFar-zNear));
+		result.elements[14] = -1;
 		
 		return result;
 	}
@@ -117,6 +123,15 @@ public class Matrix4f
 		return result;
 	}
 	
+	public static Matrix4f transform(Vector3f position, Vector3f rotation, Vector3f scale)
+	{
+		Matrix4f output = identity();
+		output.multiply(Matrix4f.translate(position));
+		output.multiply(Matrix4f.rotate(1, rotation.getX(), rotation.getY(), rotation.getZ()));
+		output.multiply(Matrix4f.scale(scale.getX(), scale.getY(), scale.getZ()));
+		return output;
+	}
+	
 	/**
 	 * Rotates the Matrix by the given Degree and axis.
 	 * @param angle Angle in degees
@@ -146,6 +161,16 @@ public class Matrix4f
 		result.elements[0 + 0 * 4] = z * omc + cos;
 		
 		return result;
+	}
+	
+	public static Matrix4f scale(float x, float y, float z)
+	{
+		Matrix4f output = new Matrix4f();
+		output.elements[0 + 0 * 4] = x;
+		output.elements[1 + 1 * 4] = y;
+		output.elements[2 + 2 * 4] = z;
+		output.elements[3 + 3 * 4] = 1;
+		return output;
 	}
 	
 	/**

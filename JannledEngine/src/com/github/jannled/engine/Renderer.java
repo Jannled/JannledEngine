@@ -3,6 +3,7 @@ package com.github.jannled.engine;
 import java.io.File;
 
 import com.github.jannled.engine.hid.InputHandler;
+import com.github.jannled.engine.maths.Matrix4f;
 import com.github.jannled.engine.model.loader.ModelLoader;
 import com.github.jannled.engine.scenegraph.Scene;
 import com.github.jannled.engine.shaders.ShaderLoader;
@@ -121,7 +122,9 @@ public class Renderer implements GLEventListener
 	{
 		Print.m("Loading Shaders...");
 		shaderLoader = new ShaderLoader(gl);
-		shaderLoader.loadShaders("/com/github/jannled/engine/shaders/VertexShader.glsl", "/com/github/jannled/engine/shaders/FragmentShader.glsl");
+		shaderLoader.loadShaders();
+		shaderLoader.createShaderProgram();
+		shaderLoader.updateMatrix(0, Matrix4f.perspective(width, height, 60.0f, 0.1f, 100f));
 	}
 	
 	/**
@@ -145,4 +148,8 @@ public class Renderer implements GLEventListener
 		return main;
 	}
 	
+	public ShaderLoader getShaderLoader()
+	{
+		return shaderLoader;
+	}
 }
