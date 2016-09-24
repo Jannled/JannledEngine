@@ -10,6 +10,7 @@ import com.jogamp.opengl.GL4;
 public class Shaderprogram
 {
 	private GL4 gl;
+	private Shader[] shaders;
 	private int shaderProgramID;
 	
 	public Shaderprogram(GL4 gl, Shader vertexShader, Shader fragmentShader)
@@ -18,6 +19,7 @@ public class Shaderprogram
 		this.gl = gl;
 		this.shaderProgramID = gl.glCreateProgram();
 		createProgram(vertexShader.getShaderID(), fragmentShader.getShaderID());
+		shaders = new Shader[] {vertexShader, fragmentShader};
 		getProgramErrorMsg(gl, shaderProgramID);
 		gl.glValidateProgram(shaderProgramID);
 	}
@@ -64,5 +66,10 @@ public class Shaderprogram
 	public int getID()
 	{
 		return shaderProgramID;
+	}
+	
+	public Shader[] getShaders()
+	{
+		return shaders;
 	}
 }

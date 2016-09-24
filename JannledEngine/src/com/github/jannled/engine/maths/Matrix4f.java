@@ -92,6 +92,30 @@ public class Matrix4f
 		return result;
 	}
 	
+	/**
+	 * A Matrix needed for perspective projection.
+	 * @param left Left
+	 * @param right Right
+	 * @param bottom Bottom
+	 * @param top Top
+	 * @param near Near Clipping Plane
+	 * @param far Far Clipping Plane
+	 * @return A Matrix representing the perspective projection
+	 */
+	public static Matrix4f perspective(float left, float right, float bottom, float top, float near, float far)
+	{
+		Matrix4f result = new Matrix4f();
+		result.elements[0 + 0 * 4] = (2*near) / (right-left);
+		result.elements[1 + 1 * 4] = (2*near) / (top-bottom);
+		result.elements[0 + 2 * 4] = (right+left) / (right-left);
+		result.elements[1 + 2 * 4] = (top+bottom) / (top-bottom);
+		result.elements[2 + 2 * 4] = -(far+near) / (far-near);
+		result.elements[3 + 2 * 4] = -1.0F;
+		result.elements[2 + 3 * 4] = (2*far*near) / (far-near);
+		
+		return result;
+	}
+	
 	public Matrix4f multiply(Matrix4f matrix)
 	{
 		Matrix4f result = new Matrix4f();
@@ -149,16 +173,16 @@ public class Matrix4f
 		float omc = 1.0f - cos;
 		
 		result.elements[0 + 0 * 4] = x * omc + cos;
-		result.elements[0 + 0 * 4] = y * x * omc + z * sin;
-		result.elements[0 + 0 * 4] = x * z * omc - y * sin;
+		result.elements[1 + 0 * 4] = y * x * omc + z * sin;
+		result.elements[2 + 0 * 4] = x * z * omc - y * sin;
 		
-		result.elements[0 + 0 * 4] = x * y * omc - z * sin;
-		result.elements[0 + 0 * 4] = y * omc + cos;
-		result.elements[0 + 0 * 4] = y * z * omc + x * sin;
+		result.elements[0 + 1 * 4] = x * y * omc - z * sin;
+		result.elements[1 + 1 * 4] = y * omc + cos;
+		result.elements[2 + 1 * 4] = y * z * omc + x * sin;
 		
-		result.elements[0 + 0 * 4] = x * z * omc + y * sin;
-		result.elements[0 + 0 * 4] = y * z * omc - x * sin;
-		result.elements[0 + 0 * 4] = z * omc + cos;
+		result.elements[0 + 2 * 4] = x * z * omc + y * sin;
+		result.elements[1 + 2 * 4] = y * z * omc - x * sin;
+		result.elements[2 + 2 * 4] = z * omc + cos;
 		
 		return result;
 	}

@@ -47,6 +47,8 @@ public class Renderer implements GLEventListener
 	
 	Scene scene = new Scene("Hauptscene");
 	
+	float rot = 0.0f;
+	
 	public Renderer(Main main, int width, int heigth, int fps)
 	{
 		Print.m("Preparing renderer. Resolution: " + width + "x" + height + ". FPS: " + fps + ".");
@@ -103,6 +105,8 @@ public class Renderer implements GLEventListener
 	public void display(GLAutoDrawable drawable) 
 	{
 		renderpipeline.renderFrame(scene);
+		rot+=1;
+		shaderLoader.updateMatrix(0, Matrix4f.rotate(rot, 1, 0, 0));
 	}
 	
 	@Override
@@ -124,7 +128,6 @@ public class Renderer implements GLEventListener
 		shaderLoader = new ShaderLoader(gl);
 		shaderLoader.loadShaders();
 		shaderLoader.createShaderProgram();
-		shaderLoader.updateMatrix(0, Matrix4f.perspective(width, height, 60.0f, 0.1f, 100f));
 	}
 	
 	/**

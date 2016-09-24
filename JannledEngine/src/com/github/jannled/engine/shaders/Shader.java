@@ -26,6 +26,7 @@ public class Shader
 	public Shader(GL4 gl, int type, String path)
 	{
 		this.gl = gl;
+		this.shaderType = type;
 		this.shaderID = loadShader(type, path);
 	}
 	
@@ -35,7 +36,7 @@ public class Shader
 		String[] files = {readFromFile(file)};
 		gl.glShaderSource(shaderID, 1, files, null);
 		gl.glCompileShader(shaderID);
-		getShaderErrorMsg(gl, shaderID);
+		getShaderErrorMsg(shaderID);
 		
 		return shaderID;
 	}
@@ -58,7 +59,7 @@ public class Shader
 		return null;
 	}
 	
-	private static String getShaderErrorMsg(GL4 gl, int shaderID)
+	private String getShaderErrorMsg(int shaderID)
 	{
 		IntBuffer compilerStat = Buffers.newDirectIntBuffer(1);
 		gl.glGetShaderiv(shaderID, GL4.GL_COMPILE_STATUS, compilerStat);

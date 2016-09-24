@@ -3,7 +3,6 @@ package com.github.jannled.engine.shaders;
 import java.io.File;
 
 import com.github.jannled.engine.maths.Matrix4f;
-import com.github.jannled.engine.maths.Vector3f;
 import com.github.jannled.lib.Print;
 import com.jogamp.opengl.GL4;
 
@@ -37,6 +36,7 @@ public class ShaderLoader
 		matrixIDs = new int[2];
 		shaderprogram = new Shaderprogram(gl, shaders[0], shaders[1]);
 		matrixIDs[0] = createMatrix(shaderprogram.getID(), "transform");
+		gl.glUseProgram(shaderprogram.getID());
 	}
 	
 	public int createMatrix(int shaderProgramID, String name)
@@ -48,7 +48,6 @@ public class ShaderLoader
 	
 	public void updateMatrix(int matrixHandle, Matrix4f matrix)
 	{
-		matrix = Matrix4f.translate(new Vector3f(0, 0, 0));
 		gl.glUniformMatrix4fv(matrixHandle, 1, true, matrix.toFloatBuffer());
 	}
 	
