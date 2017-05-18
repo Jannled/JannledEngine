@@ -32,8 +32,8 @@ public class Shader
 	
 	private int loadShader(int type, String file)
 	{
-		int shaderID = gl.glCreateShader(type);
 		String[] files = {readFromFile(file)};
+		int shaderID = gl.glCreateShader(type);
 		gl.glShaderSource(shaderID, 1, files, null);
 		gl.glCompileShader(shaderID);
 		getShaderErrorMsg(shaderID);

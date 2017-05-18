@@ -22,7 +22,7 @@ import com.jogamp.opengl.GL4;
 public class ModelLoader
 {
 	GL4 gl;
-	ModelFileLoader fileLoader = new ModelFileLoader();
+	LoaderOBJ fileLoader = new LoaderOBJ();
 	private Vector<Integer> vaos = new Vector<Integer>();
 	private Vector<Integer> vbos = new Vector<Integer>();
 	
