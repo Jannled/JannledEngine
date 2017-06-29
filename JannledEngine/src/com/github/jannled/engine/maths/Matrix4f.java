@@ -136,22 +136,22 @@ public class Matrix4f
 	 * @param vector Offset of the translation
 	 * @return The translated Matrix
 	 */
-	public static Matrix4f translate(Vector3f vector)
+	public static Matrix4f translate(Vector vector)
 	{
 		Matrix4f result = identity();
-		result.elements[0 + 3 * 4] = vector.x;
-		result.elements[1 + 3 * 4] = vector.y;
-		result.elements[2 + 3 * 4] = vector.z;
+		result.elements[0 + 3 * 4] = vector.getValue(0);
+		result.elements[1 + 3 * 4] = vector.getValue(1);
+		result.elements[2 + 3 * 4] = vector.getValue(2);
 		
 		return result;
 	}
 	
-	public static Matrix4f transform(Vector3f position, Vector3f rotation, Vector3f scale)
+	public static Matrix4f transform(Vector position, Vector rotation, Vector scale)
 	{
 		Matrix4f output = identity();
 		output.multiply(Matrix4f.translate(position));
-		output.multiply(Matrix4f.rotate(1, rotation.getX(), rotation.getY(), rotation.getZ()));
-		output.multiply(Matrix4f.scale(scale.getX(), scale.getY(), scale.getZ()));
+		output.multiply(Matrix4f.rotate(1, rotation.getValue(0), rotation.getValue(1), rotation.getValue(2)));
+		output.multiply(Matrix4f.scale(scale.getValue(0), scale.getValue(1), scale.getValue(2)));
 		return output;
 	}
 	
