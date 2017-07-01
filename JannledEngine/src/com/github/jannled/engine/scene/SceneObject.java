@@ -4,10 +4,10 @@ import com.github.jannled.engine.maths.Position;
 
 public abstract class SceneObject
 {
-	Position p;
+	protected Position pos;
 	
 	public SceneObject(Position p)
 	{
-		this.p = p;
+		
 	}
 }

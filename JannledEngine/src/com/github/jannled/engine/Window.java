@@ -34,6 +34,12 @@ public class Window
 		destroy();
 	}
 	
+	/**
+	 * Initialize a new window and append a GL context.
+	 * @param name The name of the created window.
+	 * @param width The width of the created window.
+	 * @param height The height of the created window.
+	 */
 	public void init(String name, int width, int height)
 	{
 		//Stream errors to System.err
@@ -68,6 +74,9 @@ public class Window
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 	
+	/**
+	 * Renders the frames
+	 */
 	public void loop()
 	{
 		while(!glfwWindowShouldClose(window))
@@ -79,6 +88,9 @@ public class Window
 		}
 	}
 	
+	/**
+	 * Destroy the window gracefully.
+	 */
 	public void destroy()
 	{
 		glfwFreeCallbacks(window);
@@ -107,5 +119,14 @@ public class Window
 				(vidmode.height() - pHeight.get(0)) / 2
 			);
 		} // the stack frame is popped automatically
+	}
+	
+	/**
+	 * Get the class that contains the code to loop each frame.
+	 * @return The Renderer.
+	 */
+	public Renderloop getRenderer()
+	{
+		return renderer;
 	}
 }
