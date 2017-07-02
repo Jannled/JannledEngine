@@ -17,7 +17,7 @@ public class Model extends SceneObject implements GPUUpload
 		
 		glBindVertexArray(vaoID);
 		mesh.toGPU(vaoID);
-		material.toGPU(vaoID);
+		//TODO material.toGPU(vaoID);
 		glBindVertexArray(0);
 	}
 

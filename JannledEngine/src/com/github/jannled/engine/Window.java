@@ -17,21 +17,14 @@ public class Window
 {
 	private long window = -1;
 	private Renderloop renderer;
+	private Thread renderThread;
 	
 	public Window(String name, int width, int height)
 	{
-		renderer = new Renderloop();
 		init(name, width, height);
-		loop();
-		destroy();
-	}
-	
-	public Window(String name, int width, int height, Renderloop renderer)
-	{
-		this.renderer = renderer;
-		init(name, width, height);
-		loop();
-		destroy();
+		renderer = new Renderloop(window);
+		renderThread = new Thread(renderer);
+		renderThread.start();
 	}
 	
 	/**
@@ -72,20 +65,6 @@ public class Window
 		
 		GL.createCapabilities();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	}
-	
-	/**
-	 * Renders the frames
-	 */
-	public void loop()
-	{
-		while(!glfwWindowShouldClose(window))
-		{
-			glfwPollEvents();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			renderer.renderFrame();
-			glfwSwapBuffers(window);
-		}
 	}
 	
 	/**

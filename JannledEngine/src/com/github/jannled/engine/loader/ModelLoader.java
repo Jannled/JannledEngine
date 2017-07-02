@@ -6,5 +6,5 @@ import com.github.jannled.engine.scene.Model;
 
 public interface ModelLoader
 {
-	public abstract Model load(InputStream file);
+	public Model loadModel(InputStream file);
 }

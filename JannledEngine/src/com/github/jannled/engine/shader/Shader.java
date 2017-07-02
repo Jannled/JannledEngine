@@ -1,8 +1,6 @@
 package com.github.jannled.engine.shader;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -22,15 +20,15 @@ public class Shader
 	 * @param type Usually <b>GL_VERTEX_SHADER</b> or <b>GL_FRAGMENT_SHADER</b>
 	 * @param path Path to the Shader.glsl file
 	 */
-	public Shader(int type, String path)
+	public Shader(int type, File file)
 	{
 		this.shaderType = type;
-		this.shaderID = loadShader(type, path);
+		this.shaderID = loadShader(type, file);
 	}
 	
-	private int loadShader(int type, String path)
+	private int loadShader(int type, File file)
 	{
-		String cont = readFromFile(path);
+		String cont = readFromFile(file);
 		int shaderID = glCreateShader(type);
 		glShaderSource(shaderID, cont);
 		glCompileShader(shaderID);
@@ -39,22 +37,11 @@ public class Shader
 		return shaderID;
 	}
 	
-	private static String readFromFile(String filePath)
+	private static String readFromFile(File file)
 	{
-		URL url = Shader.class.getResource(filePath);
-		File file;
-		try
-		{
-			file = new File(url.toURI());
-			Print.m("Loading Shader " + file.getAbsolutePath() + ".");
-			String output = FileUtils.readTextFileN(file);
-			return output;
-		} catch (URISyntaxException e)
-		{
-			Print.e("Invalid URL " + url.toString());
-			e.printStackTrace();
-		}
-		return null;
+		Print.m("Loading Shader " + file.getAbsolutePath() + ".");
+		String output = FileUtils.readTextFileN(file);
+		return output;
 	}
 	
 	private String getShaderErrorMsg(int shaderID)
