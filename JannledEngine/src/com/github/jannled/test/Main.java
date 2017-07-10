@@ -18,14 +18,14 @@ public class Main
 	{
 		window = new Window("Test Version of the JannledEngine", 1280, 720);
 		
-		File vertexShader = new File("src/com/github/jannled/engine/shader/vertexShader.glsl");
-		File fragmentShader = new File("src/com/github/jannled/engine/shader/fragmentShader.glsl");
-		Shader vshader = new Shader(GL_VERTEX_SHADER, vertexShader);
-		Shader fshader = new Shader(GL_FRAGMENT_SHADER, fragmentShader);
+		//File vertexShader = new File("src/com/github/jannled/engine/shader/vertexShader.glsl");
+		//File fragmentShader = new File("src/com/github/jannled/engine/shader/fragmentShader.glsl");
+		//Shader vshader = new Shader(GL_VERTEX_SHADER, vertexShader);
+		//Shader fshader = new Shader(GL_FRAGMENT_SHADER, fragmentShader);
 		
-		Scene scene = window.getRenderer().getScene();
-		Model model = OBJLoader.loadModel(Main.class.getResourceAsStream("Suzanna.obj"));
-		scene.addSceneObject(model);
+		//Scene scene = window.getRenderer().getScene();
+		//Model model = OBJLoader.loadModel(Main.class.getResourceAsStream("Suzanna.obj"));
+		//scene.addSceneObject(model);
 
 	}
 	

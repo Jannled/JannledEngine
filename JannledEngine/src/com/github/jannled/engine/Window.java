@@ -24,7 +24,8 @@ public class Window
 		init(name, width, height);
 		renderer = new Renderloop(window);
 		renderThread = new Thread(renderer);
-		renderThread.start();
+		renderThread.run();
+		renderThread.setName("Renderer");
 	}
 	
 	/**
