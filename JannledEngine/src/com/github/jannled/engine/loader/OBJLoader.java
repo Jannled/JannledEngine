@@ -2,9 +2,6 @@ package com.github.jannled.engine.loader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import com.github.jannled.engine.maths.Position;
@@ -31,7 +28,7 @@ public class OBJLoader
 	private static ArrayList<String> stextures = new ArrayList<String>();
 	private static ArrayList<String> sfaces = new ArrayList<String>();
 	
-	public static Model loadModel(InputStream in)
+	public static Model loadModel(BufferedReader in)
 	{
 		preprocess(in);
 		
@@ -71,14 +68,14 @@ public class OBJLoader
 			faces[i*3+2] = Short.parseShort(values[2].split("/")[0]);
 		}
 		
-		return new Model(new Position(0, 0, 0), new Mesh(vertices, normals, textures, faces), null);
+		Mesh mesh = new Mesh(vertices, normals, textures, faces);
+		return new Model(new Position(0, 0, 0), mesh, null);
 	}
 	
-	private static void preprocess(InputStream in)
+	private static void preprocess(BufferedReader r)
 	{
 		try
 		{
-			BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 			String line;
 			while((line = r.readLine()) != null) 
 			{

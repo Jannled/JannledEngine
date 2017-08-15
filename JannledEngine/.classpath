@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JannledUtils"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGL 3"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JannledUtils"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

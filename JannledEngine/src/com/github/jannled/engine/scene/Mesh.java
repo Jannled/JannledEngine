@@ -59,4 +59,9 @@ public class Mesh implements GPUUpload
 	{
 		return indices;
 	}
+	
+	public float[] getVertices()
+	{
+		return vertices;
+	}
 }

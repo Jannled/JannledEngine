@@ -2,6 +2,7 @@ package com.github.jannled.engine.scene;
 
 import com.github.jannled.engine.loader.GPUUpload;
 import com.github.jannled.engine.maths.Position;
+
 import static org.lwjgl.opengl.GL30.*;
 
 public class Model extends SceneObject implements GPUUpload
@@ -13,6 +14,9 @@ public class Model extends SceneObject implements GPUUpload
 	public Model(Position pos, Mesh mesh, Material material)
 	{
 		super(pos);
+		this.mesh = mesh;
+		this.material = material;
+		
 		toGPU(vaoID);
 		
 		glBindVertexArray(vaoID);
@@ -42,4 +46,8 @@ public class Model extends SceneObject implements GPUUpload
 		return material;
 	}
 
+	public int getVerticeCount()
+	{
+		return mesh.getVertices().length;
+	}
 }

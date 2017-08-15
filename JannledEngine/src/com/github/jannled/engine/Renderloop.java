@@ -4,6 +4,9 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
+
+import org.lwjgl.opengl.GL;
 
 import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.scene.Scene;
@@ -22,6 +25,7 @@ public class Renderloop implements Runnable
 	//@Override
 	public void run()
 	{
+		GL.createCapabilities();
 		while(!glfwWindowShouldClose(window))
 		{
 			glfwPollEvents();
@@ -39,7 +43,9 @@ public class Renderloop implements Runnable
 		{
 			if(o instanceof Model)
 			{
-				((Model) o).getVAOID();
+				Model m = (Model) o;
+				glBindVertexArray(m.getVAOID());
+				glDrawArrays(GL_TRIANGLES, 0, m.getVerticeCount());
 			}
 		}
 	}

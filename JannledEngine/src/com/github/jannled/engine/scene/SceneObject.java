@@ -8,6 +8,6 @@ public abstract class SceneObject
 	
 	public SceneObject(Position p)
 	{
-		
+		this.pos = p;
 	}
 }

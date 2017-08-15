@@ -24,7 +24,7 @@ public class Window
 		init(name, width, height);
 		renderer = new Renderloop(window);
 		renderThread = new Thread(renderer);
-		renderThread.run();
+		renderThread.start();
 		renderThread.setName("Renderer");
 	}
 	
@@ -64,8 +64,7 @@ public class Window
 		// Enable v-sync
 		glfwSwapInterval(1);
 		
-		GL.createCapabilities();
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 	}
 	
 	/**
