@@ -1,5 +1,6 @@
 package com.github.jannled.engine.scene;
 
+import com.github.jannled.engine.Renderloop;
 import com.github.jannled.engine.loader.GPUUpload;
 import com.github.jannled.engine.maths.Position;
 
@@ -49,5 +50,11 @@ public class Model extends SceneObject implements GPUUpload
 	public int getVerticeCount()
 	{
 		return mesh.getVertices().length;
+	}
+
+	@Override
+	public void render(Renderloop caller)
+	{
+		
 	}
 }
