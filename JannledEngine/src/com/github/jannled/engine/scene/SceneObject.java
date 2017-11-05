@@ -1,6 +1,6 @@
 package com.github.jannled.engine.scene;
 
-import com.github.jannled.engine.Renderloop;
+import com.github.jannled.engine.Renderer;
 import com.github.jannled.engine.maths.Position;
 
 public abstract class SceneObject
@@ -16,5 +16,5 @@ public abstract class SceneObject
 	 * Called to render this specific object.
 	 * @param caller The render loop instance calling the render method.
 	 */
-	public abstract void render(Renderloop caller);
+	public abstract void render(Renderer caller);
 }

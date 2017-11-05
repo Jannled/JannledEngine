@@ -2,6 +2,10 @@ package com.github.jannled.engine.scene;
 
 import java.util.LinkedList;
 
+/**
+ * A scene containing all the assets, like lamps, models etc...
+ * @author Jannled
+ */
 public class Scene
 {
 	private LinkedList<SceneObject> objects;

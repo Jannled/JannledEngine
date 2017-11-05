@@ -1,9 +1,11 @@
 package com.github.jannled.engine.scene;
 
-import com.github.jannled.engine.Renderloop;
+import com.github.jannled.engine.Renderer;
 import com.github.jannled.engine.loader.GPUUpload;
 import com.github.jannled.engine.maths.Position;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Model extends SceneObject implements GPUUpload
@@ -53,8 +55,9 @@ public class Model extends SceneObject implements GPUUpload
 	}
 
 	@Override
-	public void render(Renderloop caller)
+	public void render(Renderer caller)
 	{
-		
+		glBindVertexArray(getVAOID());
+		glDrawArrays(GL_TRIANGLES, 0, getVerticeCount());
 	}
 }

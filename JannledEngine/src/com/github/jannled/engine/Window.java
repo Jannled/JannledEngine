@@ -17,7 +17,7 @@ import com.github.jannled.lib.Print;
 public class Window
 {
 	private long window = -1;
-	private Renderloop renderer;
+	private Renderer renderer;
 	
 	private String title;
 	private int width;
@@ -42,10 +42,11 @@ public class Window
 			}
 			
 			//Free resources when window gets closed
+			Print.m("Shutting down GLFW...");
 			glfwFreeCallbacks(window);
 			glfwDestroyWindow(window);
 			glfwTerminate();
-			glfwSetErrorCallback(null).free();
+			//TODO figure out why it throws a nullpointer: glfwSetErrorCallback(null).free();
 			System.exit(exitState);
 		}
 		else
@@ -60,7 +61,7 @@ public class Window
 	{
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
 		
-		GLFWErrorCallback.createPrint(System.err).set();
+		//TODO Error callbacks leak bytes and cause Nullpointer on shutdown: GLFWErrorCallback.createPrint(System.err).set();
 		
 		try ( MemoryStack stack = stackPush() ) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -84,7 +85,7 @@ public class Window
 		GL.createCapabilities();
 		glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
 		
-		renderer = new Renderloop(window);
+		renderer = new Renderer();
 	}
 	
 	public void loop()
@@ -99,7 +100,7 @@ public class Window
 	 * Get the class that contains the code to loop each frame.
 	 * @return The Renderer.
 	 */
-	public Renderloop getRenderer()
+	public Renderer getRenderer()
 	{
 		return renderer;
 	}
