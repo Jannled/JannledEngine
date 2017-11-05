@@ -14,6 +14,11 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import com.github.jannled.lib.Print;
 
+/**
+ * Create a new window containing the renderer.<br>
+ * Note: This class has to be run on the main thread and is blocking it, running the rest of the program in a separate Thread is a good idea
+ * @author Jannled
+ */
 public class Window
 {
 	private long window = -1;
@@ -90,7 +95,7 @@ public class Window
 	
 	public void loop()
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glfwMakeContextCurrent(window);
 		glfwPollEvents();
 		renderer.renderFrame();
 		glfwSwapBuffers(window);
@@ -103,5 +108,10 @@ public class Window
 	public Renderer getRenderer()
 	{
 		return renderer;
+	}
+	
+	public int getWindowID()
+	{
+		return (int) window;
 	}
 }
