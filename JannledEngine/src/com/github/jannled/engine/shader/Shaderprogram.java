@@ -2,10 +2,12 @@ package com.github.jannled.engine.shader;
 
 import static org.lwjgl.opengl.GL20.*;
 
+import com.github.jannled.lib.Print;
+
 public class Shaderprogram
 {
 	private Shader[] shaders;
-	private int programeID;
+	private int programID;
 	
 	/**
 	 * Create a new Shaderprogram
@@ -15,12 +17,13 @@ public class Shaderprogram
 	{
 		this.shaders = shader;
 		
-		programeID = glCreateProgram();
+		programID = glCreateProgram();
 		for(Shader s : shader)
 		{
-			glAttachShader(programeID, s.getShaderID());
+			glAttachShader(programID, s.getShaderID());
 		}
-		glLinkProgram(programeID);
+		glLinkProgram(programID);
+		Print.m("Linked " + shader.length + " Shaders and created Shaderprogram with ID " + programID + ".");
 	}
 
 	public Shader[] getShaders()
@@ -28,8 +31,8 @@ public class Shaderprogram
 		return shaders;
 	}
 
-	public int getProgrameID()
+	public int getProgramID()
 	{
-		return programeID;
+		return programID;
 	}
 }

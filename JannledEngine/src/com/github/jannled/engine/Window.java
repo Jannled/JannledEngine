@@ -16,24 +16,27 @@ import com.github.jannled.lib.Print;
 
 /**
  * Create a new window containing the renderer.<br>
- * Note: This class has to be run on the main thread and is blocking it, running the rest of the program in a separate Thread is a good idea
+ * Note: This class has to be run on the main thread and is blocking it, running the rest of the program in a separate Thread is a good idea.
+ * But all GL calls need to be done on the main Thread. Use the dedicated GPUUploader for resources, and load the Shaders in the Renderlooper interface.
  * @author Jannled
  */
 public class Window
 {
 	private long window = -1;
 	private Renderer renderer;
+	private Renderlooper renderlooper;
 	
 	private String title;
 	private int width;
 	private int height;
 	private int exitState;
 	
-	public Window(String name, int width, int height)
+	public Window(Renderlooper renderlooper, String name, int width, int height)
 	{
 		this.title = name;
 		this.width = width;
 		this.height = height;
+		this.renderlooper = renderlooper;
 		
 		if(glfwInit())
 		{
@@ -90,7 +93,7 @@ public class Window
 		GL.createCapabilities();
 		glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
 		
-		renderer = new Renderer();
+		renderer = new Renderer(renderlooper);
 	}
 	
 	public void loop()

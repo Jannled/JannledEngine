@@ -5,12 +5,13 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import com.github.jannled.engine.loader.GPUUpload;
 import com.github.jannled.lib.FileUtils;
 import com.github.jannled.lib.Print;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
-public class Shader
+public class Shader implements GPUUpload
 {
 	private int shaderType;
 	private int shaderID;
@@ -70,5 +71,11 @@ public class Shader
 	public int getShaderID()
 	{
 		return shaderID;
+	}
+
+	@Override
+	public void toGPU(int vaoID)
+	{
+		
 	}
 }

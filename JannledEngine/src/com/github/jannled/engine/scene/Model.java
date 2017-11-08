@@ -1,14 +1,12 @@
 package com.github.jannled.engine.scene;
 
 import com.github.jannled.engine.Renderer;
-import com.github.jannled.engine.loader.GPUUpload;
 import com.github.jannled.engine.maths.Position;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class Model extends SceneObject implements GPUUpload
+public class Model extends SceneObject
 {
 	private int vaoID;
 	private Mesh mesh;
@@ -20,18 +18,10 @@ public class Model extends SceneObject implements GPUUpload
 		this.mesh = mesh;
 		this.material = material;
 		
-		toGPU(vaoID);
-		
 		glBindVertexArray(vaoID);
 		mesh.toGPU(vaoID);
 		//TODO material.toGPU(vaoID);
 		glBindVertexArray(0);
-	}
-
-	@Override
-	public void toGPU(int vaoID)
-	{
-		vaoID = glGenVertexArrays();
 	}
 	
 	public int getVAOID()
@@ -59,5 +49,12 @@ public class Model extends SceneObject implements GPUUpload
 	{
 		glBindVertexArray(getVAOID());
 		glDrawArrays(GL_TRIANGLES, 0, getVerticeCount());
+	}
+
+	@Override
+	public void toGPU(int vaoID)
+	{
+		mesh.toGPU(vaoID);
+		//TODO material.toGPU(vaoID);
 	}
 }

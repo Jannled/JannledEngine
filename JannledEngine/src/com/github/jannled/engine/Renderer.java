@@ -1,5 +1,6 @@
 package com.github.jannled.engine;
 
+import com.github.jannled.engine.scene.GPUUploader;
 import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.scene.SceneObject;
 import com.github.jannled.engine.shader.Shaderprogram;
@@ -16,26 +17,35 @@ import static org.lwjgl.opengl.GL20.*;
 public class Renderer
 {
 	private Scene activeScene;
-	private Shaderprogram activeProgram;
+	private Shaderprogram activePrograme;
+	public GPUUploader gpuUpload;
+	private Renderlooper renderlooper;
 	
 	/**
-	 * Constructs a new renderer and prints out some debug information about the system.
+	 * Constructs a new renderer and prints out some debug information about the system. The renderer should be created after the 
+	 * initialization phase is complete.
 	 */
-	public Renderer()
+	public Renderer(Renderlooper renderlooper)
 	{
+		gpuUpload = new GPUUploader();
+		this.renderlooper = renderlooper;
 		Print.m(getDebugInfos());
+		renderlooper.post(this);
 	}
-	
+
 	/**
 	 * Render a single frame, called by the window. This method loops through every object in the
 	 * scene and tells them to render themselves. 
 	 */
 	public void renderFrame()
 	{
+		renderlooper.frame();
+		gpuUpload.uploadSceneObjects();
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if(activeScene == null) return;
 		
-		glUseProgram(activeProgram.getProgrameID());
+		glUseProgram(activePrograme.getProgramID());
 		
 		for(SceneObject o : activeScene.getSceneObjects())
 		{
@@ -54,7 +64,27 @@ public class Renderer
 	
 	public Shaderprogram getShaderPrograme()
 	{
-		return activeProgram;
+		return activePrograme;
+	}
+	
+	public GPUUploader getGPUupload()
+	{
+		return gpuUpload;
+	}
+	
+	/**
+	 * Get some fancy system specifications.
+	 * @return A list of some useful system informations.
+	 */
+	public static String getDebugInfos()
+	{
+		return "System properties: " + 
+				"\n	====================================================" + 
+				"\n	 Operating System:	" + System.getProperty("os.name") + " " + System.getProperty("os.arch") +
+				"\n	 Java Version:		" + System.getProperty("java.version") +
+				"\n	 OpenGL Version:	" + glGetString(GL_VERSION) + 
+				"\n	 Graphics Card:		" + glGetString(GL_RENDERER) + 
+				"\n	====================================================";
 	}
 	
 	/**
@@ -68,21 +98,6 @@ public class Renderer
 	
 	public void setShaderPrograme(Shaderprogram shaderprograme)
 	{
-		this.activeProgram = shaderprograme;
-	}
-	
-	/**
-	 * Get some fancy system specifications.
-	 * @return A list of some useful system informations.
-	 */
-public static String getDebugInfos()
-	{
-		return "System properties: " + 
-				"\n	====================================================" + 
-				"\n	 Operating System:	" + System.getProperty("os.name") + " " + System.getProperty("os.arch") +
-				"\n	 Java Version:		" + System.getProperty("java.version") +
-				"\n	 OpenGL Version:	" + glGetString(GL_VERSION) + 
-				"\n	 Graphics Card:		" + glGetString(GL_RENDERER) + 
-				"\n	====================================================";
+		this.activePrograme = shaderprograme;
 	}
 }
