@@ -1,6 +1,7 @@
 package com.github.jannled.engine.shader;
 
 import java.io.File;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -8,6 +9,8 @@ import org.lwjgl.BufferUtils;
 import com.github.jannled.engine.loader.GPUUpload;
 import com.github.jannled.lib.FileUtils;
 import com.github.jannled.lib.Print;
+import com.github.jannled.lib.math.Matrix;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
@@ -71,6 +74,48 @@ public class Shader implements GPUUpload
 	public int getShaderID()
 	{
 		return shaderID;
+	}
+	
+	/**
+	 * Get the UnifomLocation of an attribute by its name.
+	 * @param name The attribute name in the shader.
+	 * @return The handle for the specified attribute.
+	 */
+	public int getAttributeID(String name)
+	{
+		return glGetUniformLocation(shaderID, name);
+	}
+	
+	/**
+	 * Push a matrix to the specified attribute.
+	 * @param matrixHandle The handle of the attribute to alter.
+	 * @param m The matrix to push.
+	 */
+	public static void setMatrix(int matrixHandle, Matrix m)
+	{
+		if(m.getWidth() != 4 || m.getHeight() != 4) Print.e("Expected a 4 by 4 matrix, got a " + m.getWidth() + " by " + m.getHeight() + " matrix.");
+		
+		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+		
+		fb.put((float) m.getValues()[0]);
+		fb.put((float) m.getValues()[1]);
+		fb.put((float) m.getValues()[2]);
+		fb.put((float) m.getValues()[3]);
+		fb.put((float) m.getValues()[4]);
+		fb.put((float) m.getValues()[5]);
+		fb.put((float) m.getValues()[6]);
+		fb.put((float) m.getValues()[7]);
+		fb.put((float) m.getValues()[8]);
+		fb.put((float) m.getValues()[9]);
+		fb.put((float) m.getValues()[10]);
+		fb.put((float) m.getValues()[11]);
+		fb.put((float) m.getValues()[12]);
+		fb.put((float) m.getValues()[13]);
+		fb.put((float) m.getValues()[14]);
+		fb.put((float) m.getValues()[15]);
+		fb.flip();
+		
+		glUniformMatrix4fv(matrixHandle, false, fb);
 	}
 
 	@Override

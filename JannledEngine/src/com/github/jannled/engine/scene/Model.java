@@ -4,7 +4,7 @@ import com.github.jannled.engine.Renderer;
 import com.github.jannled.engine.maths.Position;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL15.*;
 
 public class Model extends SceneObject
 {
@@ -17,11 +17,6 @@ public class Model extends SceneObject
 		super(pos);
 		this.mesh = mesh;
 		this.material = material;
-		
-		glBindVertexArray(vaoID);
-		mesh.toGPU(vaoID);
-		//TODO material.toGPU(vaoID);
-		glBindVertexArray(0);
 	}
 	
 	public int getVAOID()
@@ -47,8 +42,8 @@ public class Model extends SceneObject
 	@Override
 	public void render(Renderer caller)
 	{
-		glBindVertexArray(getVAOID());
-		glDrawArrays(GL_TRIANGLES, 0, getVerticeCount());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.getIndiceID());
+		glDrawElements(GL_TRIANGLES, mesh.allFaces().length, GL_UNSIGNED_SHORT, 0);
 	}
 
 	@Override

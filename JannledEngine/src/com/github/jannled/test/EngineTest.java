@@ -10,6 +10,7 @@ import com.github.jannled.engine.Renderer;
 import com.github.jannled.engine.Renderlooper;
 import com.github.jannled.engine.Window;
 import com.github.jannled.engine.loader.OBJLoader;
+import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
@@ -55,7 +56,9 @@ public class EngineTest implements Renderlooper
 		
 		try
 		{
-			renderer.getGPUupload().addToQue((OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))))));
+			Model m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))));
+			renderer.getGPUupload().addToQue(m);
+			scene.addSceneObject(m);
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();

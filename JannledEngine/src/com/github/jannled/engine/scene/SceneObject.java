@@ -11,6 +11,7 @@ public abstract class SceneObject implements GPUUpload
 {
 	protected Position pos;
 	protected int vaoID;
+	protected boolean uploaded = false; 
 	
 	public SceneObject(Position p)
 	{
@@ -18,7 +19,8 @@ public abstract class SceneObject implements GPUUpload
 	}
 	
 	/**
-	 * Called by the thread currently communicating with the OpenGL interface.
+	 * Called by the thread currently communicating with the OpenGL interface. Needs to be done because there 
+	 * can only be one Thread locking the GL interface.
 	 */
 	void createGLObject()
 	{
@@ -27,6 +29,7 @@ public abstract class SceneObject implements GPUUpload
 		glBindVertexArray(vaoID);
 		toGPU(vaoID);
 		glBindVertexArray(0);
+		uploaded = true;
 	}
 	
 	/**
@@ -34,4 +37,13 @@ public abstract class SceneObject implements GPUUpload
 	 * @param caller The render loop instance calling the render method.
 	 */
 	public abstract void render(Renderer caller);
+	
+	/**
+	 * If the Scene Object is alreay uploaded to the GPU
+	 * @return True if the data has been uploaded successfully.
+	 */
+	public boolean isUploaded()
+	{
+		return uploaded;
+	}
 }

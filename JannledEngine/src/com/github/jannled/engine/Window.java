@@ -91,7 +91,7 @@ public class Window
 		
 		glfwMakeContextCurrent(window);
 		GL.createCapabilities();
-		glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+		glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 		
 		renderer = new Renderer(renderlooper);
 	}

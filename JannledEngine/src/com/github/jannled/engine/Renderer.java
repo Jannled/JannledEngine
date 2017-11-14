@@ -9,6 +9,8 @@ import com.github.jannled.lib.Print;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
+import org.lwjgl.Version;
+
 /**
  * Class for handling resources like shaders and rendering the scene containing all the models and other objects
  * (or at least it's telling the resources to render themselves). 
@@ -49,8 +51,9 @@ public class Renderer
 		
 		for(SceneObject o : activeScene.getSceneObjects())
 		{
-			o.render(this);
+			if(o.isUploaded()) o.render(this);
 		}
+		glFlush();
 	}
 	
 	/**
@@ -78,10 +81,11 @@ public class Renderer
 	 */
 	public static String getDebugInfos()
 	{
-		return "System properties: " + 
+		return "System specifications: " + 
 				"\n	====================================================" + 
 				"\n	 Operating System:	" + System.getProperty("os.name") + " " + System.getProperty("os.arch") +
 				"\n	 Java Version:		" + System.getProperty("java.version") +
+				"\n	 LWJGL Version:		" + Version.getVersion() + 
 				"\n	 OpenGL Version:	" + glGetString(GL_VERSION) + 
 				"\n	 Graphics Card:		" + glGetString(GL_RENDERER) + 
 				"\n	====================================================";
