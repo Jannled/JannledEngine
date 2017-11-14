@@ -13,8 +13,9 @@ public abstract class SceneObject implements GPUUpload
 	protected int vaoID;
 	protected boolean uploaded = false; 
 	
-	public SceneObject(Position p)
+	public SceneObject(GPUUploader uploader, Position p)
 	{
+		uploader.addToQue(this);
 		this.pos = p;
 	}
 	

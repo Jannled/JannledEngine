@@ -3,8 +3,12 @@ package com.github.jannled.engine.scene;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
+
+import java.nio.FloatBuffer;
 
 import com.github.jannled.engine.loader.GPUUpload;
+import com.github.jannled.engine.utils.Utils4Buffers;
 
 public class Mesh implements GPUUpload
 {
@@ -29,31 +33,15 @@ public class Mesh implements GPUUpload
 	@Override
 	public void toGPU(int vaoID)
 	{
-		//generate VBOs
 		vertexID = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vertexID);
-		glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
 		
+		int vao = glGenVertexArrays();
+		glBindVertexArray(vao);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-		
-		normalID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, normalID);
-		glBufferData(GL_ARRAY_BUFFER, normals, GL_DYNAMIC_DRAW);
-		
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
-		
-		uvID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, uvID);
-		glBufferData(GL_ARRAY_BUFFER, uvs, GL_DYNAMIC_DRAW);
-		
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, false, 0, 0);
-		
-		indicesID = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, allFaces(), GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexID);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, Utils4Buffers.toFloatBufffer(vertices));
 	}
 	
 	public short[] allFaces()

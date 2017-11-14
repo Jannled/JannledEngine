@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.github.jannled.engine.maths.Position;
+import com.github.jannled.engine.scene.GPUUploader;
 import com.github.jannled.engine.scene.Mesh;
 import com.github.jannled.engine.scene.Model;
 
@@ -69,7 +70,7 @@ public class OBJLoader
 		}
 		
 		Mesh mesh = new Mesh(vertices, normals, textures, faces);
-		return new Model(new Position(0, 0, 0), mesh, null);
+		return new Model(GPUUploader.gup, new Position(0, 0, 0), mesh, null);
 	}
 	
 	private static void preprocess(BufferedReader r)

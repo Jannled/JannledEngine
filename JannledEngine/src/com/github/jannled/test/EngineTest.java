@@ -57,7 +57,6 @@ public class EngineTest implements Renderlooper
 		try
 		{
 			Model m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))));
-			renderer.getGPUupload().addToQue(m);
 			scene.addSceneObject(m);
 		} catch (FileNotFoundException e)
 		{
