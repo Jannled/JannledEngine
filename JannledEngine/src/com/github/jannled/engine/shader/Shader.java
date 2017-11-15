@@ -30,13 +30,27 @@ public class Shader implements GPUUpload
 		this.shaderID = loadShader(type, file);
 	}
 	
+	/**
+	 * Class representing a shader
+	 * @param type Usually <b>GL_VERTEX_SHADER</b> or <b>GL_FRAGMENT_SHADER</b>
+	 * @param code The source code for the shader.
+	 */
+	public Shader(int type, String code)
+	{
+		this.shaderType = type;
+		shaderID = glCreateShader(type);
+		glShaderSource(shaderID, code);
+		glCompileShader(shaderID);
+		getShaderErrorMsg();
+	}
+	
 	private int loadShader(int type, File file)
 	{
 		String cont = readFromFile(file);
 		int shaderID = glCreateShader(type);
 		glShaderSource(shaderID, cont);
 		glCompileShader(shaderID);
-		getShaderErrorMsg(shaderID);
+		getShaderErrorMsg();
 		
 		return shaderID;
 	}
@@ -48,7 +62,12 @@ public class Shader implements GPUUpload
 		return output;
 	}
 	
-	private String getShaderErrorMsg(int shaderID)
+	private String getShaderErrorMsg()
+	{
+		return Shader.getShaderErrorMsg(shaderID);
+	}
+	
+	public static String getShaderErrorMsg(int shaderID)
 	{
 		IntBuffer compilerStat = BufferUtils.createIntBuffer(1);
 		String log = glGetShaderInfoLog(shaderID);

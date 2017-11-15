@@ -15,6 +15,7 @@ import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
 import com.github.jannled.lib.Print;
+import com.github.jannled.test.testengine.Test;
 
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL20.*;
@@ -45,8 +46,8 @@ public class EngineTest implements Renderlooper
 	{
 		File vertexShader = new File("src/com/github/jannled/engine/shader/vertexShader.glsl");
 		File fragmentShader = new File("src/com/github/jannled/engine/shader/fragmentShader.glsl");
-		Shader vshader = new Shader(GL_VERTEX_SHADER, vertexShader);
-		Shader fshader = new Shader(GL_FRAGMENT_SHADER, fragmentShader);
+		Shader vshader = new Shader(GL_VERTEX_SHADER, Test.vshader);
+		Shader fshader = new Shader(GL_FRAGMENT_SHADER, Test.fshader);
 		
 		Shaderprogram shaderprograme = new Shaderprogram(vshader, fshader);
 		renderer.setShaderPrograme(shaderprograme);
