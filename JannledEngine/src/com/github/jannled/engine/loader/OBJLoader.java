@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.github.jannled.engine.scene.Model;
+import com.github.jannled.lib.math.Vector;
 
 /**
  * Class to load OBJ-files into memory
@@ -66,7 +67,7 @@ public class OBJLoader
 			faces[i*3+2] = Short.parseShort(values[2].split("/")[0]);
 		}
 		
-		return new Model(vertices);
+		return new Model(new Vector(3), vertices);
 	}
 	
 	private static void preprocess(BufferedReader r)

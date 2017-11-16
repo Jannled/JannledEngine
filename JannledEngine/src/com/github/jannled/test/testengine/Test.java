@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL;
 import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
+import com.github.jannled.lib.math.Vector;
 
 public class Test
 {
@@ -67,7 +68,7 @@ public class Test
 
 	public void init()
 	{
-		m = new Model(triangle);
+		m = new Model(new Vector(3), triangle);
 		m.upload();
 		
 		Shader vs = new Shader(GL_VERTEX_SHADER, vshader);

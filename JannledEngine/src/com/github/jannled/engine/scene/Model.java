@@ -5,13 +5,16 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
+import com.github.jannled.lib.math.Vector;
+
 public class Model extends SceneObject
 {
 	private float[] vertices;
 	private int verticesID;
 	
-	public Model(float[] vertices)
+	public Model(Vector position, float[] vertices)
 	{
+		super(position);
 		this.vertices = vertices;
 	}
 	
