@@ -47,7 +47,7 @@ public class Shader implements GPUUpload
 	private int loadShader(int type, File file)
 	{
 		String cont = readFromFile(file);
-		int shaderID = glCreateShader(type);
+		shaderID = glCreateShader(type);
 		glShaderSource(shaderID, cont);
 		glCompileShader(shaderID);
 		getShaderErrorMsg();

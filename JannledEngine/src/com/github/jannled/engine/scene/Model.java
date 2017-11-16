@@ -3,6 +3,7 @@ package com.github.jannled.engine.scene;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 
 public class Model extends SceneObject
 {
@@ -28,6 +29,7 @@ public class Model extends SceneObject
 	@Override
 	public void render()
 	{
+		glBindVertexArray(getVAO());
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 	}
 	

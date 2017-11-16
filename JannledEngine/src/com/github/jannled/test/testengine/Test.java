@@ -3,21 +3,17 @@ package com.github.jannled.test.testengine;
 import static org.lwjgl.glfw.GLFW.*;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-
-import java.nio.IntBuffer;
-
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 
+import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.shader.Shader;
-import com.github.jannled.lib.Print;
+import com.github.jannled.engine.shader.Shaderprogram;
 
 public class Test
 {
 	long window;
+	Model m;
 	
 	public static final float[] triangle =
 		{
@@ -46,10 +42,10 @@ public class Test
 		if(!glfwInit()) System.exit(-1);
 		
 		glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); // To make MacOS happy; should not be needed
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+		//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); // To make MacOS happy; should not be needed
+		//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		
 		window = glfwCreateWindow(1280, 720, "The Test", 0, 0);
 		if(window==0) System.exit(-1);
@@ -71,46 +67,21 @@ public class Test
 
 	public void init()
 	{
-		int vao = glGenVertexArrays();
-		glBindVertexArray(vao);
+		m = new Model(triangle);
+		m.upload();
 		
-		int vbo = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, triangle, GL_STATIC_DRAW);
+		Shader vs = new Shader(GL_VERTEX_SHADER, vshader);
+		Shader fs = new Shader(GL_FRAGMENT_SHADER, fshader);
+		Shaderprogram sp = new Shaderprogram(vs, fs);
 		
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-		
-		int vsID = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vsID, vshader);
-		glCompileShader(vsID);
-		
-		int fsID = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fsID, fshader);
-		glCompileShader(fsID);
-		
-		//Check if sucessfully
-		IntBuffer ib1 = BufferUtils.createIntBuffer(1);
-		glGetShaderiv(vsID, GL_COMPILE_STATUS, ib1);
-		IntBuffer ib2 = BufferUtils.createIntBuffer(1);
-		glGetShaderiv(fsID, GL_COMPILE_STATUS, ib2);
-		Print.m("Vertex Shader: " + ib1.get() + ", Fragment Shader: " + ib2.get());
-		Shader.getShaderErrorMsg(vsID);
-		
-		int programID = glCreateProgram();
-		glAttachShader(programID, vsID);
-		glAttachShader(programID, fsID);
-		glLinkProgram(programID);
-		
-		glUseProgram(programID);
+		glUseProgram(sp.getProgramID());
 	}
 	
 	public void loop()
 	{
 		glfwSwapBuffers(window);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	    glfwPollEvents();
-	    
-	    glDrawArrays(GL_TRIANGLES, 0, 3);
+	    m.render();
 	}
 }
