@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.github.jannled.engine.maths.Position;
-import com.github.jannled.engine.scene.GPUUploader;
-import com.github.jannled.engine.scene.Mesh;
 import com.github.jannled.engine.scene.Model;
 
 /**
@@ -36,7 +33,7 @@ public class OBJLoader
 		float[] vertices = new float[svertices.size()*3];
 		float[] normals = new float[snormals.size()*3];
 		float[] textures = new float[stextures.size()*2];
-		short[] faces = new short[sfaces.size()*3];
+		float[] faces = new float[sfaces.size()*3];
 		
 		for(int i=0; i<vertices.length/3; i++)
 		{
@@ -69,8 +66,7 @@ public class OBJLoader
 			faces[i*3+2] = Short.parseShort(values[2].split("/")[0]);
 		}
 		
-		Mesh mesh = new Mesh(vertices, normals, textures, faces);
-		return new Model(GPUUploader.gup, new Position(0, 0, 0), mesh, null);
+		return new Model(vertices);
 	}
 	
 	private static void preprocess(BufferedReader r)

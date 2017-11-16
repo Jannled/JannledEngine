@@ -1,15 +1,10 @@
 package com.github.jannled.test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Arrays;
 
 import com.github.jannled.engine.Renderer;
 import com.github.jannled.engine.Renderlooper;
 import com.github.jannled.engine.Window;
-import com.github.jannled.engine.loader.OBJLoader;
 import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.shader.Shader;
@@ -44,8 +39,8 @@ public class EngineTest implements Renderlooper
 	@Override
 	public void post(Renderer renderer)
 	{
-		File vertexShader = new File("src/com/github/jannled/engine/shader/vertexShader.glsl");
-		File fragmentShader = new File("src/com/github/jannled/engine/shader/fragmentShader.glsl");
+		//File vertexShader = new File("src/com/github/jannled/engine/shader/vertexShader.glsl");
+		//File fragmentShader = new File("src/com/github/jannled/engine/shader/fragmentShader.glsl");
 		Shader vshader = new Shader(GL_VERTEX_SHADER, Test.vshader);
 		Shader fshader = new Shader(GL_FRAGMENT_SHADER, Test.fshader);
 		
@@ -55,14 +50,9 @@ public class EngineTest implements Renderlooper
 		Scene scene = new Scene();
 		renderer.setScene(scene);
 		
-		try
-		{
-			Model m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))));
-			scene.addSceneObject(m);
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		Model m = new Model(Test.triangle);
+		m.upload();
+		scene.addSceneObject(m);
 	}
 
 	@Override

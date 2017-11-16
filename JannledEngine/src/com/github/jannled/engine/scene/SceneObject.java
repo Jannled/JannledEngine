@@ -1,50 +1,55 @@
 package com.github.jannled.engine.scene;
 
-import com.github.jannled.engine.Renderer;
-import com.github.jannled.engine.loader.GPUUpload;
-import com.github.jannled.engine.maths.Position;
 import com.github.jannled.lib.Print;
+import com.github.jannled.lib.math.Vector;
 
 import static org.lwjgl.opengl.GL30.*;
 
-public abstract class SceneObject implements GPUUpload
+public abstract class SceneObject
 {
-	protected Position pos;
-	protected int vaoID;
-	protected boolean uploaded = false; 
-	
-	public SceneObject(GPUUploader uploader, Position p)
-	{
-		uploader.addToQue(this);
-		this.pos = p;
-	}
+	protected int vaoID = -1;
+	protected Vector position;
 	
 	/**
-	 * Called by the thread currently communicating with the OpenGL interface. Needs to be done because there 
-	 * can only be one Thread locking the GL interface.
+	 * Upload the data to the GPU. Generates the VAO id, binds it and then calls init().
 	 */
-	void createGLObject()
+	public void upload()
 	{
+		Thread t = Thread.currentThread();
+		if(t.getId() != 1)
+		{
+			Print.e("Tried to upload the model with VAO id " + vaoID + " from Thread " + t.getName() + "(" + t.getId() + ") but it is not the main Thread!");
+			return;
+		}
 		vaoID = glGenVertexArrays();
-		Print.d("Loading Ressource " + vaoID);
 		glBindVertexArray(vaoID);
-		toGPU(vaoID);
+		Print.d("Uploading model with VAO id " + vaoID + " to the GPU.");
+		init();
 		glBindVertexArray(0);
-		uploaded = true;
 	}
 	
 	/**
-	 * Called to render this specific object.
-	 * @param caller The render loop instance calling the render method.
+	 * Upload the data to the GPU. The vao is already created and bound and gets unbound afterwards.
 	 */
-	public abstract void render(Renderer caller);
+	protected abstract void init();
 	
 	/**
-	 * If the Scene Object is alreay uploaded to the GPU
-	 * @return True if the data has been uploaded successfully.
+	 * Render this object, called every frame by the renderer.
 	 */
-	public boolean isUploaded()
+	public abstract void render();
+	
+	/**
+	 * Get the Vertex Array handle of this object. 
+	 * @return The VAO id or -1 if not yet allocated.
+	 */
+	public int getVAO()
 	{
-		return uploaded;
+		return vaoID;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "VAO id: " + vaoID;
 	}
 }

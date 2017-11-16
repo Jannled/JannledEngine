@@ -1,54 +1,38 @@
 package com.github.jannled.engine.scene;
 
-import com.github.jannled.engine.Renderer;
-import com.github.jannled.engine.maths.Position;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
 
 public class Model extends SceneObject
 {
-	private Mesh mesh;
-	private Material material;
-
-	public Model(GPUUploader uploader, Position pos, Mesh mesh, Material material)
+	private float[] vertices;
+	private int verticesID;
+	
+	public Model(float[] vertices)
 	{
-		super(uploader, pos);
-		this.mesh = mesh;
-		this.material = material;
+		this.vertices = vertices;
 	}
 	
-	public int getVAOID()
+	@Override
+	protected void init()
 	{
-		return vaoID;
-	}
+		verticesID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, verticesID);
+		glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
 		
-	public Mesh getMesh()
-	{
-		return mesh;
-	}
-
-	public Material getMaterial()
-	{
-		return material;
-	}
-
-	public int getVerticeCount()
-	{
-		return mesh.getVertices().length;
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 	}
 
 	@Override
-	public void render(Renderer caller)
+	public void render()
 	{
-		glBindVertexArray(vaoID);
-		glDrawArrays(GL_TRIANGLES, 0, getVerticeCount());
+		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 	}
-
-	@Override
-	public void toGPU(int vaoID)
+	
+	public float[] getVertices()
 	{
-		mesh.toGPU(vaoID);
-		//TODO material.toGPU(vaoID);
+		return vertices;
 	}
 }

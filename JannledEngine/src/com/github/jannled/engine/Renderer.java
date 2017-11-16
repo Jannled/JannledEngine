@@ -1,6 +1,5 @@
 package com.github.jannled.engine;
 
-import com.github.jannled.engine.scene.GPUUploader;
 import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.scene.SceneObject;
 import com.github.jannled.engine.shader.Shaderprogram;
@@ -20,7 +19,6 @@ public class Renderer
 {
 	private Scene activeScene;
 	private Shaderprogram activePrograme;
-	public GPUUploader gpuUpload;
 	private Renderlooper renderlooper;
 	
 	/**
@@ -29,7 +27,6 @@ public class Renderer
 	 */
 	public Renderer(Renderlooper renderlooper)
 	{
-		gpuUpload = new GPUUploader();
 		this.renderlooper = renderlooper;
 		Print.m(getDebugInfos());
 		renderlooper.post(this);
@@ -42,18 +39,15 @@ public class Renderer
 	public void renderFrame()
 	{
 		renderlooper.frame();
-		gpuUpload.uploadSceneObjects();
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if(activeScene == null) return;
 		
-		glUseProgram(activePrograme.getProgramID());
-		
 		for(SceneObject o : activeScene.getSceneObjects())
 		{
-			if(o.isUploaded()) o.render(this);
+			if(o.getVAO() > 0) o.render();
 		}
-		glFlush();
+		//glFlush();
 	}
 	
 	/**
@@ -68,11 +62,6 @@ public class Renderer
 	public Shaderprogram getShaderPrograme()
 	{
 		return activePrograme;
-	}
-	
-	public GPUUploader getGPUupload()
-	{
-		return gpuUpload;
 	}
 	
 	/**
@@ -103,5 +92,6 @@ public class Renderer
 	public void setShaderPrograme(Shaderprogram shaderprograme)
 	{
 		this.activePrograme = shaderprograme;
+		glUseProgram(activePrograme.getProgramID());
 	}
 }

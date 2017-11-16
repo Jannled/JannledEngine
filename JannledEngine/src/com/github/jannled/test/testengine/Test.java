@@ -19,7 +19,7 @@ public class Test
 {
 	long window;
 	
-	private final float[] triangle =
+	public static final float[] triangle =
 		{
 			-1.0f, -1.0f, 0.0f,
 			1.0f, -1.0f, 0.0f,
