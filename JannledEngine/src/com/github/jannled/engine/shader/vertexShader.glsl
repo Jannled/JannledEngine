@@ -10,6 +10,6 @@ out vec3 fragColour;
 
 void main() 
 {
-	fragColour = vec3(1.0, 1.0, 1.0);
+	fragColour = vec3(1.0, 0.0, 1.0);
 	gl_Position = transform * vec4(vertexPositions, 1.0);
 }

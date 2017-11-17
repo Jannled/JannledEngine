@@ -1,5 +1,6 @@
 package com.github.jannled.engine.scene;
 
+import com.github.jannled.engine.shader.Shaderprogram;
 import com.github.jannled.lib.Print;
 import com.github.jannled.lib.math.Matrix;
 import com.github.jannled.lib.math.Vector;
@@ -8,13 +9,12 @@ import static org.lwjgl.opengl.GL30.*;
 
 public abstract class SceneObject
 {
+	protected Shaderprogram shaderprogram;
 	protected int vaoID = -1;
 	
 	private Vector position;
 	private Vector rotation;
 	private Vector scale;
-	
-	private Matrix modelMatrix;
 	
 	public SceneObject(Vector position)
 	{
@@ -23,18 +23,21 @@ public abstract class SceneObject
 	
 	/**
 	 * Upload the data to the GPU. Generates the VAO id, binds it and then calls init().
+	 * @param shaderprogram The shaderprogram to query for uniform variables.
 	 */
-	public void upload(int ModelMatrixHandle)
+	public void upload(Shaderprogram shaderprogram)
 	{
+		this.shaderprogram = shaderprogram;
+		
 		Thread t = Thread.currentThread();
 		if(t.getId() != 1)
 		{
-			Print.e("Tried to upload the model with VAO id " + vaoID + " from Thread " + t.getName() + "(" + t.getId() + ") but it is not the main Thread!");
+			Print.e("Tried to upload " + toString() + " from Thread " + t.getName() + "(" + t.getId() + ") but it is not the main Thread!");
 			return;
 		}
 		vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);
-		Print.d("Uploading model with VAO id " + vaoID + " to the GPU.");
+		Print.d("Uploading " + toString() + " to the GPU.");
 		init();
 		glBindVertexArray(0);
 	}
@@ -45,14 +48,19 @@ public abstract class SceneObject
 	protected abstract void init();
 	
 	/**
-	 * Render this object, called every frame by the renderer.
+	 * Render this object, called every frame by the renderer, it then calls the render() method.
 	 */
-	public abstract void render();
-	
-	private void rebuildMatrix()
+	public void renderFrame()
 	{
-		
+		int mHandle = shaderprogram.getAttributeID("transform");
+		shaderprogram.setMatrix(mHandle, Matrix.identity(4, 4));
+		render();
 	}
+	
+	/**
+	 * Render this object, called every frame by the renderer. The model matrix is already recalculated and uploaded.
+	 */
+	protected abstract void render();
 	
 	/**
 	 * Get the Vertex Array handle of this object. 
@@ -98,7 +106,6 @@ public abstract class SceneObject
 	{
 		this.position = position;
 		if(position.getValues().length != 3)	Print.e("The " + toString() + " must have 3 position coordinates (x,y,z)!");
-		rebuildMatrix();
 	}
 	
 	/**
@@ -120,7 +127,6 @@ public abstract class SceneObject
 	{
 		this.rotation = rotation;
 		if(rotation.getValues().length != 3)	Print.e("The " + toString() + " must have 3 rotation angles (x,y,z)!");
-		rebuildMatrix();
 	}
 	
 	/**
@@ -142,7 +148,6 @@ public abstract class SceneObject
 	{
 		this.scale = scale;
 		if(scale.getValues().length != 3)	Print.e("The " + toString() + " must have 3 scaling factors (x,y,z)!");
-		rebuildMatrix();
 	}
 	
 	/**
@@ -159,6 +164,6 @@ public abstract class SceneObject
 	@Override
 	public String toString()
 	{
-		return "Model(ID: " + vaoID + ")";
+		return "SceneObject(ID: " + vaoID + ")";
 	}
 }

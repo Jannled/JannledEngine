@@ -69,7 +69,7 @@ public class Test
 	public void init()
 	{
 		m = new Model(new Vector(3), triangle);
-		m.upload();
+		//m.upload();
 		
 		Shader vs = new Shader(GL_VERTEX_SHADER, vshader);
 		Shader fs = new Shader(GL_FRAGMENT_SHADER, fshader);

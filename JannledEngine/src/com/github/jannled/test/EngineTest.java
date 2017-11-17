@@ -1,19 +1,20 @@
 package com.github.jannled.test;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Arrays;
 
 import com.github.jannled.engine.Renderer;
 import com.github.jannled.engine.Renderlooper;
 import com.github.jannled.engine.Window;
+import com.github.jannled.engine.loader.OBJLoader;
 import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
 import com.github.jannled.lib.Print;
-import com.github.jannled.lib.math.Vector;
-import com.github.jannled.test.testengine.Test;
-
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL20.*;
 
@@ -30,6 +31,7 @@ public class EngineTest implements Renderlooper
 	{
 		Print.setOutputLevel(Print.ALL);
 		Print.d(Arrays.toString(args));
+		Thread.currentThread().setName("Renderer");
 		new EngineTest();
 	}
 
@@ -52,8 +54,16 @@ public class EngineTest implements Renderlooper
 		Scene scene = new Scene();
 		renderer.setScene(scene);
 		
-		Model m = new Model(new Vector(0, 0, 0), Test.triangle);
-		m.upload(vshader.getAttributeID("transform"));
+		Model m = null;
+		try
+		{
+			m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))));
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		m.upload(renderer.getShaderPrograme());
 		scene.addSceneObject(m);
 	}
 

@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
 import org.lwjgl.Version;
+import org.lwjgl.opengl.GL;
 
 /**
  * Class for handling resources like shaders and rendering the scene containing all the models and other objects
@@ -28,6 +29,9 @@ public class Renderer
 	public Renderer(Renderlooper renderlooper)
 	{
 		this.renderlooper = renderlooper;
+		GL.createCapabilities();
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		
 		Print.m(getDebugInfos());
 		renderlooper.post(this);
 	}
@@ -45,7 +49,7 @@ public class Renderer
 		
 		for(SceneObject o : activeScene.getSceneObjects())
 		{
-			if(o.getVAO() > 0) o.render();
+			if(o.getVAO() > 0) o.renderFrame();
 		}
 		//glFlush();
 	}

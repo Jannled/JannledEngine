@@ -40,4 +40,10 @@ public class Model extends SceneObject
 	{
 		return vertices;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Model(ID: " + vaoID + ")";
+	}
 }
