@@ -34,7 +34,7 @@ public class OBJLoader
 		float[] vertices = new float[svertices.size()*3];
 		float[] normals = new float[snormals.size()*3];
 		float[] textures = new float[stextures.size()*2];
-		float[] faces = new float[sfaces.size()*3];
+		int[] faces = new int[sfaces.size()*3];
 		
 		for(int i=0; i<vertices.length/3; i++)
 		{
@@ -67,7 +67,7 @@ public class OBJLoader
 			faces[i*3+2] = Short.parseShort(values[2].split("/")[0]);
 		}
 		
-		return new Model(new Vector(3), vertices);
+		return new Model(new Vector(3), vertices, faces);
 	}
 	
 	private static void preprocess(BufferedReader r)

@@ -19,6 +19,8 @@ public abstract class SceneObject
 	public SceneObject(Vector position)
 	{
 		setPosition(position);
+		setRotation(0, 0, 0);
+		setScale(1, 1, 1);
 	}
 	
 	/**
@@ -48,12 +50,15 @@ public abstract class SceneObject
 	protected abstract void init();
 	
 	/**
-	 * Render this object, called every frame by the renderer, it then calls the render() method.
+	 * Calculate the model matrix, then calls the actual render method.
 	 */
 	public void renderFrame()
 	{
 		int mHandle = shaderprogram.getAttributeID("transform");
-		shaderprogram.setMatrix(mHandle, Matrix.identity(4, 4));
+		
+		Matrix model = Matrix.translate(position);
+		
+		shaderprogram.setMatrix(mHandle, model);
 		render();
 	}
 	

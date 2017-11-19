@@ -15,6 +15,9 @@ import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
 import com.github.jannled.lib.Print;
+import com.github.jannled.lib.math.Vector;
+import com.github.jannled.test.testengine.Test;
+
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL20.*;
 
@@ -63,6 +66,8 @@ public class EngineTest implements Renderlooper
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		
+		m = new Model(new Vector(1, 1, 0), Test.triangle, new int[] {0, 1, 2});
 		m.upload(renderer.getShaderPrograme());
 		scene.addSceneObject(m);
 	}

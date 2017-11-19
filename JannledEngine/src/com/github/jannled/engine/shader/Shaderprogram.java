@@ -80,7 +80,6 @@ public class Shaderprogram
 	public void setMatrix(int matrixHandle, Matrix m)
 	{
 		if(m.getWidth() != 4 || m.getHeight() != 4) Print.e("Expected a 4 by 4 matrix, got a " + m.getWidth() + " by " + m.getHeight() + " matrix.");
-		
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 		
 		fb.put((float) m.getValues()[0]);
@@ -101,6 +100,6 @@ public class Shaderprogram
 		fb.put((float) m.getValues()[15]);
 		fb.flip();
 		
-		glUniformMatrix4fv(matrixHandle, false, fb);
+		glUniformMatrix4fv(matrixHandle, true, fb);
 	}
 }

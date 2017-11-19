@@ -18,7 +18,7 @@ import com.github.jannled.lib.Print;
  * But all GL calls need to be done on the main Thread. Use the dedicated GPUUploader for resources, and load the Shaders in the Renderlooper interface.
  * @author Jannled
  */
-public class Window
+public class Window implements GLFWWindowSizeCallbackI
 {
 	private long window = -1;
 	private Renderer renderer;
@@ -69,6 +69,7 @@ public class Window
 		glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 		
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
+		glfwSetWindowSizeCallback(window, this);
 		
 		//TODO Error callbacks leak bytes and cause Nullpointer on shutdown: GLFWErrorCallback.createPrint(System.err).set();
 		
@@ -115,5 +116,11 @@ public class Window
 	public int getWindowID()
 	{
 		return (int) window;
+	}
+
+	@Override
+	public void invoke(long window, int width, int height)
+	{
+		Print.d("Changed window size to " + width + "x" + height +".");
 	}
 }
