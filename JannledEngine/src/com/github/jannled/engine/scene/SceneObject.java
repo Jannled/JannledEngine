@@ -56,7 +56,8 @@ public abstract class SceneObject
 	{
 		int mHandle = shaderprogram.getAttributeID("transform");
 		
-		Matrix model = Matrix.translate(position);
+		//Matrix model = Matrix.perspective(0.01, 100, 60, 16/9).multiply(Matrix.scale(scale)).multiply(Matrix.rotate(rotation)).multiply(Matrix.translate(position));
+		Matrix model = Matrix.translate(position);//Matrix.perspective(0.01, 100, 60, 16/9);
 		
 		shaderprogram.setMatrix(mHandle, model);
 		render();

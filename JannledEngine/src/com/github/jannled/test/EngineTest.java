@@ -63,11 +63,11 @@ public class EngineTest implements Renderlooper
 			m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))));
 		} catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
-		m = new Model(new Vector(1, 1, 0), Test.triangle, new int[] {0, 1, 2});
+		m = new Model(new Vector(0, 0, 1), Test.triangle, new int[] {0, 1, 2});
+		m.setScale(0.5, 0.5, 0.5);
 		m.upload(renderer.getShaderPrograme());
 		scene.addSceneObject(m);
 	}
