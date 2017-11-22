@@ -43,9 +43,7 @@ public class Model extends SceneObject
 	{
 		int mHandle = shaderprogram.getAttributeID("transform");
 		
-		Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition())); //Matrix.perspective(0.01, 100, 60, 16/9).multiply(
-		//Matrix model = Matrix.perspective(0.001, 100, 60, 16/9);
-		model.getValues()[15] = 1;
+		Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition())).multiply(Matrix.perspective(0.01, 100, 60, 16/9));
 		
 		shaderprogram.setMatrix(mHandle, model);
 		
