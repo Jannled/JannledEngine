@@ -2,7 +2,6 @@ package com.github.jannled.engine.scene;
 
 import com.github.jannled.engine.shader.Shaderprogram;
 import com.github.jannled.lib.Print;
-import com.github.jannled.lib.math.Matrix;
 import com.github.jannled.lib.math.Vector;
 
 import static org.lwjgl.opengl.GL30.*;
@@ -21,6 +20,13 @@ public abstract class SceneObject
 		setPosition(position);
 		setRotation(0, 0, 0);
 		setScale(1, 1, 1);
+	}
+	
+	public SceneObject(Vector position, Vector rotation, Vector scale)
+	{
+		setPosition(position);
+		setRotation(rotation);
+		setScale(scale);
 	}
 	
 	/**
@@ -50,23 +56,9 @@ public abstract class SceneObject
 	protected abstract void init();
 	
 	/**
-	 * Calculate the model matrix, then calls the actual render method.
-	 */
-	public void renderFrame()
-	{
-		int mHandle = shaderprogram.getAttributeID("transform");
-		
-		//Matrix model = Matrix.perspective(0.01, 100, 60, 16/9).multiply(Matrix.scale(scale)).multiply(Matrix.rotate(rotation)).multiply(Matrix.translate(position));
-		Matrix model = Matrix.translate(position);//Matrix.perspective(0.01, 100, 60, 16/9);
-		
-		shaderprogram.setMatrix(mHandle, model);
-		render();
-	}
-	
-	/**
 	 * Render this object, called every frame by the renderer. The model matrix is already recalculated and uploaded.
 	 */
-	protected abstract void render();
+	public abstract void render();
 	
 	/**
 	 * Get the Vertex Array handle of this object. 

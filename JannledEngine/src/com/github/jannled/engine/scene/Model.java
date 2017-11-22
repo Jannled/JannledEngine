@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
+import com.github.jannled.lib.math.Matrix;
 import com.github.jannled.lib.math.Vector;
 
 public class Model extends SceneObject
@@ -40,6 +41,14 @@ public class Model extends SceneObject
 	@Override
 	public void render()
 	{
+		int mHandle = shaderprogram.getAttributeID("transform");
+		
+		Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition())); //Matrix.perspective(0.01, 100, 60, 16/9).multiply(
+		//Matrix model = Matrix.perspective(0.001, 100, 60, 16/9);
+		model.getValues()[15] = 1;
+		
+		shaderprogram.setMatrix(mHandle, model);
+		
 		glBindVertexArray(getVAO());
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesID);
 		glDrawElements(GL_TRIANGLES, faces.length, GL_UNSIGNED_INT, 0);

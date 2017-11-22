@@ -49,7 +49,7 @@ public class Renderer
 		
 		for(SceneObject o : activeScene.getSceneObjects())
 		{
-			if(o.getVAO() > 0) o.renderFrame();
+			if(o.getVAO() > 0) o.render();
 		}
 		//glFlush();
 	}
