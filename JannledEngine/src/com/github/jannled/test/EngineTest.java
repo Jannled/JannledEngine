@@ -66,8 +66,8 @@ public class EngineTest implements Renderlooper
 			e.printStackTrace();
 		} 
 		
-		m = new Model(new Vector(0, 0, 0), Test.triangle, new int[] {0, 1, 2});
-		m.setScale(0.5, 0.5, 0.5);
+		m = new Model(new Vector(0, 1, 0), Test.triangle, new int[] {0, 1, 2});
+		m.setScale(1, 0.5, 0.5);
 		m.upload(renderer.getShaderPrograme());
 		scene.addSceneObject(m);
 	}
