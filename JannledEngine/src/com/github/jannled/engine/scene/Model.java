@@ -44,8 +44,9 @@ public class Model extends SceneObject
 		int mHandle = shaderprogram.getAttributeID("transform");
 		
 		//Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition())).multiply(Matrix.perspective(0.01, 100, 60, 16/9));
-		Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition()));
-		//Matrix model = Matrix.perspective(0.01, 10, 90, 16/9);
+		//Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition()));
+		Matrix model = Matrix.perspective(0.01, 10, 45, 1.7777778);
+		Matrix testPos = model.multiply(new Matrix(new double[][] {{2}, {3}, {4}, {1}}));
 		shaderprogram.setMatrix(mHandle, model);
 		
 		glBindVertexArray(getVAO());
