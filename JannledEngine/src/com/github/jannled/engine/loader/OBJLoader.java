@@ -31,7 +31,7 @@ public class OBJLoader
 	{
 		preprocess(in);
 		
-		float[] vertices = new float[svertices.size()*3];
+		double[] vertices = new double[svertices.size()*3];
 		float[] normals = new float[snormals.size()*3];
 		float[] textures = new float[stextures.size()*2];
 		int[] faces = new int[sfaces.size()*3];

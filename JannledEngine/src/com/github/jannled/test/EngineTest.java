@@ -15,11 +15,11 @@ import com.github.jannled.engine.scene.Scene;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
 import com.github.jannled.lib.Print;
-import com.github.jannled.lib.math.Vector;
-import com.github.jannled.test.testengine.Test;
 
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class EngineTest implements Renderlooper
 {
@@ -60,15 +60,14 @@ public class EngineTest implements Renderlooper
 		Model m = null;
 		try
 		{
-			m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Suzanna.obj"))));
+			m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Icosphere.obj"))));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		} 
-		
-		m = new Model(new Vector(1, 1, 1), Test.triangle, new int[] {0, 1, 2});
 		m.setScale(0.7, 0.6, 0.5);
 		m.upload(renderer.getShaderPrograme());
+		m.setDrawType(GL_POINTS);
 		scene.addSceneObject(m);
 	}
 
