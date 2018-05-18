@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL;
 import com.github.jannled.engine.scene.Model;
 import com.github.jannled.engine.shader.Shader;
 import com.github.jannled.engine.shader.Shaderprogram;
-import com.github.jannled.lib.math.Vector;
 
 public class Test
 {

@@ -60,11 +60,12 @@ public class EngineTest implements Renderlooper
 		Model m = null;
 		try
 		{
-			m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Icosphere.obj"))));
+			m = OBJLoader.loadModel(new BufferedReader(new FileReader(new File("src/com/github/jannled/test/Cube.obj"))));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-		} 
+			return;
+		}
 		m.setScale(0.7, 0.6, 0.5);
 		m.upload(renderer.getShaderPrograme());
 		m.setDrawType(GL_POINTS);

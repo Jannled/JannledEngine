@@ -51,7 +51,7 @@ public class Renderer
 		{
 			if(o.getVAO() > 0) o.render();
 		}
-		//glFlush();
+		glFlush();
 	}
 	
 	/**

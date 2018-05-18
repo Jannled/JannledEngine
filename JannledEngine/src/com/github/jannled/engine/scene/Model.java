@@ -7,8 +7,6 @@ import static org.lwjgl.opengl.GL30.*;
 
 import java.nio.DoubleBuffer;
 
-import org.lwjgl.BufferUtils;
-
 import com.github.jannled.lib.Print;
 import com.github.jannled.lib.math.Matrix;
 import com.github.jannled.lib.math.Vector;
@@ -53,9 +51,10 @@ public class Model extends SceneObject
 		int mHandle = shaderprogram.getAttributeID("transform");
 		
 		//Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition())).multiply(Matrix.perspective(0.01, 100, 60, 16/9));
-		Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition()));
+		//Matrix model = Matrix.scale(getScale()).multiply(Matrix.rotate(getRotation())).multiply(Matrix.translate(getPosition()));
 		//Matrix model = Matrix.perspective(0.01, 10, 45, 1.7777778);
 		//Matrix testPos = model.multiply(new Matrix(new double[][] {{2}, {3}, {4}, {1}}));
+		Matrix model = Matrix.scale(getScale());
 		shaderprogram.setMatrix(mHandle, model);
 		
 		glBindVertexArray(getVAO());
