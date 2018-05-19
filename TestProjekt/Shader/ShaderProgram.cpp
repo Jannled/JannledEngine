@@ -13,13 +13,11 @@ using namespace std;
 
 unsigned int shaderProgram;
 
-ShaderProgram::ShaderProgram(Shader *shader)
+ShaderProgram::ShaderProgram(Shader &vshader, Shader &fshader)
 {
 	shaderProgram = glCreateProgram();
-	for(unsigned int i=0; i<(sizeof(Shader) / sizeof(shader)); i++)
-	{
-		glAttachShader(shaderProgram, shader[i].shaderID);
-	}
+	glAttachShader(shaderProgram, vshader.shaderID);
+	glAttachShader(shaderProgram, fshader.shaderID);
 
 	glLinkProgram(shaderProgram);
 
@@ -32,7 +30,7 @@ ShaderProgram::ShaderProgram(Shader *shader)
 	else
 	{
 		int logLen;
-		glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &logLen); //TODO Warum ist das 1. Argument kein gültiges Handle???
+		glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &logLen);
 		char infoLog[logLen];
 		glGetProgramInfoLog(shaderProgram, logLen, &logLen, infoLog);
 		cerr << infoLog << endl;

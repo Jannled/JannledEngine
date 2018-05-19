@@ -10,11 +10,16 @@
 using namespace std;
 
 int compileStatus;
+GLenum shaderType;
+std::string sourceCode;
 
 Shader::Shader(char *filePath, GLenum shaderType)
 {
+	Shader::shaderType = shaderType;
+	std::string sourceCode = "";
+
+	//Read file
 	std::ifstream file;
-	std::string fileContent = "";
 	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	try
 	{
@@ -22,20 +27,22 @@ Shader::Shader(char *filePath, GLenum shaderType)
 		std::stringstream fileStream;
 		fileStream << file.rdbuf();
 		file.close();
-		fileContent = fileStream.str();
+		sourceCode = fileStream.str();
 	}
 	catch(std::ifstream::failure &e)
 	{
 		std::cout << "Error while reading file from path: " << filePath << std::endl;
 	}
 
+	//Create Shader
 	shaderID = glCreateShader(GL_VERTEX_SHADER);
-	const char *cFileContent = fileContent.c_str();
+	const char *cFileContent = sourceCode.c_str();
 	glShaderSource(shaderID, 1, &cFileContent, NULL);
 	glCompileShader(shaderID);
 
 	cout << "Loading shader with ID " << shaderID << "." << endl;
 
+	//Check for errors
 	int logLen;
 	int charsWritten;
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compileStatus);

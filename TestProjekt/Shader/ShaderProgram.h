@@ -13,7 +13,7 @@
 
 class ShaderProgram {
 public:
-	ShaderProgram(Shader *shader);
+	ShaderProgram(Shader &vshader, Shader &fshader);
 	void useProgram();
 	virtual ~ShaderProgram();
 };

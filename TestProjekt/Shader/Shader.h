@@ -17,6 +17,9 @@
 class Shader {
 public:
 	unsigned int shaderID;
+	GLenum shaderType;
+	std::string sourceCode;
+
 	Shader(char*, GLenum);
 	virtual ~Shader();
 };
