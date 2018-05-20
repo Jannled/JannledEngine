@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Shader/Shader.h"
+#include "Shader/ShaderProgram.h"
 #include "Debug.h"
 
 using namespace std;
@@ -27,22 +28,8 @@ unsigned int indices[] = {  // note that we start from 0!
 
 unsigned int VAO;
 
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
-
-
-char *vertexShaderPath = "Shader/vertexShader.glsl";
-char *fragmentShaderPath = "Shader/fragmentShader.glsl";
+const char *vertexShaderPath = "Shader/vertexShader.glsl";
+const char *fragmentShaderPath = "Shader/fragmentShader.glsl";
 
 void loadModel()
 {
@@ -69,21 +56,11 @@ void loadModel()
 
 void loadShader()
 {
-	Shader vertexShader (vertexShaderSource, GL_VERTEX_SHADER);
-	Shader fragmentShader (fragmentShaderSource, GL_FRAGMENT_SHADER);
-	/*ShaderProgram shaderProgram (vertexShader, fragmentShader);
-	shaderProgram.useProgram();*/
-
-	// link shaders
-	int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader.shaderID);
-	glAttachShader(shaderProgram, fragmentShader.shaderID);
-	glLinkProgram(shaderProgram);
-
-	glDeleteShader(vertexShader.shaderID);
-	glDeleteShader(fragmentShader.shaderID);
-
-	glUseProgram(shaderProgram);
+	Shader vertexShader (vertexShaderPath, GL_VERTEX_SHADER);
+	Shader fragmentShader (fragmentShaderPath, GL_FRAGMENT_SHADER);
+	Shader shaders[] = {vertexShader, fragmentShader};
+	ShaderProgram shaderProgram (shaders, 2);
+	shaderProgram.useProgram();
 }
 
 int main(int argc, char *argv[])
@@ -134,6 +111,8 @@ int main(int argc, char *argv[])
 
 	loadModel();
 	loadShader();
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glClearColor(0, 0, 0, 0);
 

@@ -9,11 +9,28 @@
 
 using namespace std;
 
-Shader::Shader(const char *fileContent, GLenum shaderType)
+Shader::Shader(const char *filePath, GLenum shaderType)
 {
+	string fileContent;
+	ifstream file;
+	file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+	try
+	{
+		file.open(filePath);
+		std::stringstream vShaderStream, fShaderStream;
+		vShaderStream << file.rdbuf();
+		file.close();
+		fileContent = vShaderStream.str();
+	}
+	catch (std::ifstream::failure &e)
+	{
+		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+	}
+
 	//Create Shader
 	shaderID = glCreateShader(shaderType);
-	glShaderSource(shaderID, 1, &fileContent, NULL);
+	const char *sourceCode = fileContent.c_str();
+	glShaderSource(shaderID, 1, &sourceCode, NULL);
 	glCompileShader(shaderID);
 	// check for shader compile errors
 	int success;
