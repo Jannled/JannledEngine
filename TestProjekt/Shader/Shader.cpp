@@ -1,7 +1,7 @@
 /*
  * Shader.cpp
  *
- *  Created on: 12.05.2018
+ *  Created on: 19.05.2018
  *      Author: Jannled
  */
 
@@ -9,59 +9,28 @@
 
 using namespace std;
 
-int compileStatus;
-GLenum shaderType;
-std::string sourceCode;
-
-Shader::Shader(char *filePath, GLenum shaderType)
+Shader::Shader(const char *fileContent, GLenum shaderType)
 {
-	Shader::shaderType = shaderType;
-	std::string sourceCode = "";
-
-	//Read file
-	std::ifstream file;
-	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	try
-	{
-		file.open(filePath);
-		std::stringstream fileStream;
-		fileStream << file.rdbuf();
-		file.close();
-		sourceCode = fileStream.str();
-	}
-	catch(std::ifstream::failure &e)
-	{
-		std::cout << "Error while reading file from path: " << filePath << std::endl;
-	}
-
 	//Create Shader
-	shaderID = glCreateShader(GL_VERTEX_SHADER);
-	const char *cFileContent = sourceCode.c_str();
-	glShaderSource(shaderID, 1, &cFileContent, NULL);
+	shaderID = glCreateShader(shaderType);
+	glShaderSource(shaderID, 1, &fileContent, NULL);
 	glCompileShader(shaderID);
-
-	cout << "Loading shader with ID " << shaderID << "." << endl;
-
-	//Check for errors
-	int logLen;
-	int charsWritten;
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compileStatus);
-	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &logLen);
-
-	if(compileStatus == GL_TRUE)
+	// check for shader compile errors
+	int success;
+	char infoLog[512];
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
+	if (!success)
 	{
-		cout << "Shader ID " << shaderID << " compiled successful." << endl;
+		glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 	else
 	{
-		char infoLog[logLen];
-		glGetShaderInfoLog(shaderID, logLen, &charsWritten, infoLog);
-		cerr << "Shader(" << shaderID << ") compilation failed with error message: " << infoLog << endl;
+		cout << "Successfully loader Shader with id " << shaderID << "." << endl;
 	}
 }
 
-Shader::~Shader()
-{
-
+Shader::~Shader() {
+	// TODO Auto-generated destructor stub
 }
 

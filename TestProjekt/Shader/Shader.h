@@ -1,27 +1,26 @@
 /*
  * Shader.h
  *
- *  Created on: 12.05.2018
+ *  Created on: 19.05.2018
  *      Author: Jannled
  */
 
-#ifndef SHADER_H_
-#define SHADER_H_
+#ifndef SHADER_SHADER_H_
+#define SHADER_SHADER_H_
 
 #include <iostream>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <fstream>
 #include <sstream>
 
-#include <GL/glew.h>
-
-class Shader {
+class Shader
+{
 public:
-	unsigned int shaderID;
-	GLenum shaderType;
-	std::string sourceCode;
-
-	Shader(char*, GLenum);
+	GLuint shaderID;
+	Shader(const char*, GLenum);
 	virtual ~Shader();
 };
 
-#endif /* SHADER_H_ */
+#endif /* SHADER_SHADER_H_ */
