@@ -7,6 +7,17 @@
 
 #include "Model.h"
 
+struct Vertex {
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec3 texCoords;
+};
+
+struct Texture {
+	unsigned int id;
+	std::string type;
+};
+
 Model::Model(float vertices[], unsigned int verticesLen, unsigned int indices[], unsigned int indicesLen)
 {
 	unsigned int VBO, EBO;

@@ -9,6 +9,7 @@
 #define SHADER_MODEL_H_
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 #include "../Shader/Shader.h"
 #include "../Shader/ShaderProgram.h"

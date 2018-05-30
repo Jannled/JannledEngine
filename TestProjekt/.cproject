@@ -29,6 +29,8 @@
 								<option id="gnu.cpp.compiler.option.include.paths.569134444" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;F:\Librarys\glew-2.1.0\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;F:\Librarys\glfw-3.2.1_32\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Librarys\AssimpExe\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Librarys\GLM\include&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.614321859" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -42,6 +44,7 @@
 								<option id="gnu.cpp.link.option.paths.588411027" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;F:\Librarys\glew-2.1.0\lib\Release\Win32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;F:\Librarys\glfw-3.2.1_32\lib-mingw&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;F:\Librarys\AssimpExe&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.463179741" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="glfw3"/>
@@ -49,6 +52,7 @@
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="opengl32"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="glu32"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="gdi32"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="libassimp"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1394362164" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
