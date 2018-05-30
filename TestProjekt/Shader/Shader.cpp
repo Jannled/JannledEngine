@@ -24,7 +24,11 @@ Shader::Shader(const char *filePath, GLenum shaderType)
 	}
 	catch (std::ifstream::failure &e)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		cerr << "Exception while reading file : " << filePath << "!" << std::endl;
+	}
+	catch (std::ios_base::failure &e)
+	{
+		cerr << "Exception while reading file : " << filePath << "!" << std::endl;
 	}
 
 	//Create Shader
@@ -33,13 +37,13 @@ Shader::Shader(const char *filePath, GLenum shaderType)
 	glShaderSource(shaderID, 1, &sourceCode, NULL);
 	glCompileShader(shaderID);
 	// check for shader compile errors
-	int success;
-	char infoLog[512];
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
+	int success; glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
 	if (!success)
 	{
+		int logLen; glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &logLen);
+		char infoLog[logLen];
 		glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		cerr << "Shader(" << shaderID << ") compilation failed with error message: " << infoLog << endl;
 	}
 	else
 	{

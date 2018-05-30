@@ -11,6 +11,7 @@
 
 #include "Shader/Shader.h"
 #include "Shader/ShaderProgram.h"
+#include "Model/Model.h"
 #include "Debug.h"
 
 using namespace std;
@@ -26,32 +27,12 @@ unsigned int indices[] = {  // note that we start from 0!
     1, 2, 3   // second Triangle
 };
 
-unsigned int VAO;
-
 const char *vertexShaderPath = "Shader/vertexShader.glsl";
 const char *fragmentShaderPath = "Shader/fragmentShader.glsl";
 
 void loadModel()
 {
-	unsigned int VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
+	Model model(&vertices, 0, &indices, 0);
 }
 
 void loadShader()
@@ -121,7 +102,7 @@ int main(int argc, char *argv[])
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindVertexArray(VAO);
+		glBindVertexArray(model.vaoID);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
     	glfwPollEvents();
