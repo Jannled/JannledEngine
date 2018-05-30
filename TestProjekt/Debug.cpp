@@ -33,8 +33,8 @@ void Debug::printDebugInfos()
 	const unsigned char *graphicsCard = glGetString(GL_RENDERER);
 
 	std::string debugInfo = "====================================================="
-	"\n  Software Arch:	" + getOsName() + ""
-	"\n  C++ Version:		" + "GNU C++"
+	"\n  Software Arch: 	" + getOsName() + ""
+	"\n  Compiler:		" + "GNU C++"
 	"\n  GLEW Version:		" + std::string(glewVersion, glewVersion + sizeof glewVersion / sizeof glewVersion[0] + 25) + ""
 	"\n  OpenGL Version:	" + std::string(glVersion, glVersion + sizeof glVersion / sizeof glVersion[0] + 25) + ""
 	"\n  Graphics Card:	" + std::string(graphicsCard, graphicsCard + sizeof graphicsCard / sizeof graphicsCard[0] + 25) + ""

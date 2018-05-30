@@ -32,7 +32,25 @@ const char *fragmentShaderPath = "Shader/fragmentShader.glsl";
 
 void loadModel()
 {
-	Model model(&vertices, 0, &indices, 0);
+	unsigned int VBO, EBO, vaoID;
+	glGenVertexArrays(1, &vaoID);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(vaoID);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
 }
 
 void loadShader()
@@ -90,10 +108,10 @@ int main(int argc, char *argv[])
 
 	cout << "OpenGL initialization phase complete, engines should be up and running" << endl;
 
-	loadModel();
+	Model model(vertices, 12, indices, 6);
 	loadShader();
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glClearColor(0, 0, 0, 0);
 
@@ -102,7 +120,7 @@ int main(int argc, char *argv[])
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindVertexArray(model.vaoID);
+		glBindVertexArray(1);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
     	glfwPollEvents();

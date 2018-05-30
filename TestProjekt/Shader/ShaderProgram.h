@@ -8,6 +8,7 @@
 #ifndef SHADER_SHADERPROGRAM_H_
 #define SHADER_SHADERPROGRAM_H_
 
+#include <iostream>
 #include "Shader.h"
 
 class ShaderProgram {

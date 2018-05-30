@@ -42,12 +42,12 @@ Shader::Shader(const char *filePath, GLenum shaderType)
 	{
 		int logLen; glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &logLen);
 		char infoLog[logLen];
-		glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
+		glGetShaderInfoLog(shaderID, logLen, NULL, infoLog);
 		cerr << "Shader(" << shaderID << ") compilation failed with error message: " << infoLog << endl;
 	}
 	else
 	{
-		cout << "Successfully loader Shader with id " << shaderID << "." << endl;
+		cout << "Successfully loaded Shader with id " << shaderID << "." << endl;
 	}
 }
 
