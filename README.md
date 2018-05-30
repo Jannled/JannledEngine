@@ -1,3 +1,5 @@
 # JannledEngine
 
-This is my Game-Engine. It is based on the <b>L</b>ight<b>w</b>eight <b>J</b>ava <b>G</b>ame <b>L</b>ibrary and will be used for my games later on.
+This is my Game-Engine. It uses the GLFW, GLEW and Assimp library and is compiled with MingW GNU C++.
+
+It will be used for my games later on.
