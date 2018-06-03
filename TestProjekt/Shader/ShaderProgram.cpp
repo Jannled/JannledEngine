@@ -9,8 +9,6 @@
 
 using namespace std;
 
-GLint programID;
-
 ShaderProgram::ShaderProgram(Shader shaders[], int size)
 {
 	programID = glCreateProgram();

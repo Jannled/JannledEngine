@@ -13,6 +13,7 @@
 
 class ShaderProgram {
 public:
+	GLint programID;
 	ShaderProgram(Shader shaders[], int size);
 	void useProgram();
 	virtual ~ShaderProgram();
