@@ -1,29 +1,26 @@
 /*
  * Scene.h
  *
- *  Created on: 01.06.2018
+ *  Created on: 07.06.2018
  *      Author: Jannled
  */
 
 #ifndef SCENE_SCENE_H_
 #define SCENE_SCENE_H_
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <map>
 #include <vector>
 
+#include "../Shader/ShaderProgram.h"
 #include "Model.h"
-
-using namespace std;
 
 class Scene {
 public:
-	vector<Model> meshes;
+	std::vector<Model> models;
+
 	Scene();
+
+	void render(ShaderProgram& shaderProgram);
+
 	virtual ~Scene();
 };
 

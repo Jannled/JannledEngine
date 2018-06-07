@@ -15,8 +15,6 @@
 #include "Scene/Model.h"
 #include "Scene/ModelLoader.h"
 
-//TODO Header does not compile: #include "Test.h"
-
 using namespace std;
 
 const char *vertexShaderPath = "Shader/vertexShader.glsl";
@@ -32,10 +30,17 @@ ShaderProgram loadShader()
 	return shaderProgram;
 }
 
+void window_size_callback(GLFWwindow* window, int width, int height)
+{
+	cout << "New window size: " << width << "x" << height << endl;
+	glViewport(0, 0, width, height);
+}
+
 int main(int argc, char *argv[])
 {
 	//Print command line args
 	cout << "Starting Test Project with arguments: ";
+
 	for(int i=0; i<argc; i++)
 	{
 		cout << argv[i] << ((i==argc-1) ? "\n" : ", ");
@@ -75,11 +80,13 @@ int main(int argc, char *argv[])
 	Debug::printDebugInfos();
 
 	glViewport(0, 0, 1280, 720);
+	glfwSetWindowSizeCallback(window, window_size_callback);
 
 	cout << "OpenGL initialization phase complete, engines should be up and running" << endl;
 
 	ModelLoader ml;
 	ml.loadModel("C:\\Users\\jannl\\git\\JannledEngine\\TestProjekt\\Scene\\Suzanna.obj");
+	//ml.loadModel("C:\\Users\\jannl\\git\\JannledEngine\\TestProjekt\\Scene\\Cube.obj");
 	ShaderProgram program = loadShader();
 
 	glClearColor(0, 0, 0, 0);
@@ -89,7 +96,7 @@ int main(int argc, char *argv[])
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		ml.currentScene.meshes[0].render(program);
+		ml.currentScene.render(program);
 
         glfwSwapBuffers(window);
     	glfwPollEvents();
@@ -100,3 +107,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+

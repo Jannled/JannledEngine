@@ -10,53 +10,12 @@
 #include <sstream>
 #include <iostream>
 #include <map>
-#include <vector>
+
 
 #include "../Scene/Model.h"
 
-struct Vertex {
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec2 texCoords;
-	glm::vec3 Tangent;
-	glm::vec3 Bitangent;
-};
-
-struct Texture {
-	unsigned int id;
-	std::string type;
-};
-
-Model::Model(float vertices[], unsigned int verticesLen, unsigned int indices[], unsigned int indicesLen)
-{
-	unsigned int VBO, EBO;
-	glGenVertexArrays(1, &vaoID);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(vaoID);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, verticesLen * sizeof(float), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesLen * sizeof(unsigned int), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
-}
-
 Model::Model(aiMesh *mesh, const aiScene *scene)
 {
-	// data to fill
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
-
 	// Walk through each of the mesh's vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
@@ -82,16 +41,6 @@ Model::Model(aiMesh *mesh, const aiScene *scene)
 			vertex.texCoords = vec;
 		} else
 			vertex.texCoords = glm::vec2(0.0f, 0.0f);
-		//TODO tangent
-		/*vector.x = mesh->mTangents[i].x;
-		vector.y = mesh->mTangents[i].y;
-		vector.z = mesh->mTangents[i].z;
-		vertex.Tangent = vector;
-		// bitangent
-		vector.x = mesh->mBitangents[i].x;
-		vector.y = mesh->mBitangents[i].y;
-		vector.z = mesh->mBitangents[i].z;
-		vertex.Bitangent = vector;*/
 		vertices.push_back(vertex);
 	}
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
@@ -111,26 +60,30 @@ Model::Model(aiMesh *mesh, const aiScene *scene)
 	glBindVertexArray(vaoID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	int s = vertices.size();
+	glBufferData(GL_ARRAY_BUFFER, s * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	// vertex normals
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	// vertex texture coords
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
 	glBindVertexArray(0);
 }
 
 void Model::render(ShaderProgram &program)
 {
-	//TODO Scene should call this method
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glBindVertexArray(vaoID);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, vertices.size(), GL_UNSIGNED_INT, 0);
 }
 
 Model::~Model() {

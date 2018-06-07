@@ -18,12 +18,28 @@
 #include "../Shader/Shader.h"
 #include "../Shader/ShaderProgram.h"
 
+#include <vector>
+
 class Model
 {
 public:
 	unsigned int vaoID;
 
-	Model(float vertices[], unsigned int verticesLen, unsigned int indices[], unsigned int indicesLen);
+	struct Vertex {
+		glm::vec3 position;
+		glm::vec3 normal;
+		glm::vec2 texCoords;
+	};
+
+	struct Texture {
+		unsigned int id;
+		std::string type;
+	};
+
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+	std::vector<Texture> textures;
+
 	Model(aiMesh *mesh, const aiScene *scene);
 
 	void render(ShaderProgram&);

@@ -9,7 +9,9 @@
 #define SCENE_MODELLOADER_H_
 
 #include <iostream>
+#include <vector>
 
+#include "Model.h"
 #include "Scene.h"
 
 class ModelLoader
