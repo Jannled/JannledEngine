@@ -11,11 +11,15 @@
 #include <iostream>
 #include <map>
 
-
 #include "../Scene/Model.h"
 
 Model::Model(aiMesh *mesh, const aiScene *scene)
 {
+	wireFrame = true;
+	loc	  = glm::vec3(0.0f, 0.0f, -3.0f);
+	rot	  = glm::vec3(0.0f, 0.0f, 0.0f);
+	scale = glm::vec3(1.0f, 0.0f, 0.0f);
+
 	// Walk through each of the mesh's vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
@@ -80,7 +84,13 @@ Model::Model(aiMesh *mesh, const aiScene *scene)
 
 void Model::render(ShaderProgram &program)
 {
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, wireFrame ? GL_LINE : GL_FILL); //GL_LINE or GL_FILL
+
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, loc);
+	//model = glm::transpose(model);
+
+	program.uploadMatrix(program.acticveProjection * model); //Projection * View * Model
 
 	glBindVertexArray(vaoID);
 	glDrawElements(GL_TRIANGLES, vertices.size(), GL_UNSIGNED_INT, 0);

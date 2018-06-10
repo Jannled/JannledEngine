@@ -9,7 +9,7 @@
 
 using namespace std;
 
-ShaderProgram::ShaderProgram(Shader shaders[], int size)
+ShaderProgram::ShaderProgram(Shader shaders[], unsigned int size)
 {
 	programID = glCreateProgram();
 	for(unsigned int i=0; i<size; i++)
@@ -36,6 +36,19 @@ ShaderProgram::ShaderProgram(Shader shaders[], int size)
 void ShaderProgram::useProgram()
 {
 	glUseProgram(programID);
+}
+
+GLint ShaderProgram::getUniformLocation(const std::string name)
+{
+	GLint aloc = glGetUniformLocation(programID, name.c_str());
+	if(aloc < 0) std::cerr << "Could not find a shader attrib with name " << name << "!";
+	return aloc;
+}
+
+void ShaderProgram::uploadMatrix(glm::mat4 matrix)
+{
+	GLint aloc = getUniformLocation("mvpm");
+	glUniformMatrix4fv(aloc, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 ShaderProgram::~ShaderProgram() {

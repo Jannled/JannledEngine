@@ -5,48 +5,29 @@
  *	  Author: Jannled
  */
 
-#include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include "Shader/Shader.h"
-#include "Shader/ShaderProgram.h"
-#include "Debug.h"
-#include "Scene/Model.h"
-#include "Scene/ModelLoader.h"
+#include "Window.h"
 
 using namespace std;
 
+static Window* instance;
+
 const char *vertexShaderPath = "Shader/vertexShader.glsl";
 const char *fragmentShaderPath = "Shader/fragmentShader.glsl";
-
-ShaderProgram loadShader()
-{
-	Shader vertexShader (vertexShaderPath, GL_VERTEX_SHADER);
-	Shader fragmentShader (fragmentShaderPath, GL_FRAGMENT_SHADER);
-	Shader shaders[] = {vertexShader, fragmentShader};
-	ShaderProgram shaderProgram (shaders, 2);
-	shaderProgram.useProgram();
-	return shaderProgram;
-}
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
 	cout << "New window size: " << width << "x" << height << endl;
 	glViewport(0, 0, width, height);
+
+	//Setup projection matrix
+	glm::mat4 projm = glm::perspective(glm::radians(60.0f), (float)width/(float)height, 0.1f, 1000.0f);
+	instance->activeProgram->acticveProjection = projm;
 }
 
-int main(int argc, char *argv[])
+Window::Window(string title)
 {
-	//Print command line args
-	cout << "Starting Test Project with arguments: ";
-
-	for(int i=0; i<argc; i++)
-	{
-		cout << argv[i] << ((i==argc-1) ? "\n" : ", ");
-	}
-
 	//Initialize GLFW
+	instance = this;
 	GLenum glfwFlag = glfwInit();
 	if(!glfwFlag)
 	{
@@ -58,14 +39,14 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "LearnOpenGL", NULL, NULL);
-	if (window == NULL)
+	applicationWindow = glfwCreateWindow(1280, 720, "LearnOpenGL", NULL, NULL);
+	if (applicationWindow == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
-		return -1;
+		exit(-1);
 	}
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(applicationWindow);
 
 	//Initialize OpenGL/GLEW
 	GLenum glewflag = glewInit();
@@ -80,31 +61,40 @@ int main(int argc, char *argv[])
 	Debug::printDebugInfos();
 
 	glViewport(0, 0, 1280, 720);
-	glfwSetWindowSizeCallback(window, window_size_callback);
+	glfwSetWindowSizeCallback(applicationWindow, window_size_callback);
 
 	cout << "OpenGL initialization phase complete, engines should be up and running" << endl;
 
 	ModelLoader ml;
 	ml.loadModel("C:\\Users\\jannl\\git\\JannledEngine\\TestProjekt\\Scene\\Suzanna.obj");
-	//ml.loadModel("C:\\Users\\jannl\\git\\JannledEngine\\TestProjekt\\Scene\\Cube.obj");
-	ShaderProgram program = loadShader();
+
+	Shader vertexShader (vertexShaderPath, GL_VERTEX_SHADER);
+	Shader fragmentShader (fragmentShaderPath, GL_FRAGMENT_SHADER);
+	Shader shaders[] = {vertexShader, fragmentShader};
+	activeProgram = new ShaderProgram(shaders, 2);
+	activeProgram->useProgram();
 
 	glClearColor(0, 0, 0, 0);
 
+	window_size_callback(applicationWindow, 1280, 720); //Resize fix
+
 	//Start render loop
-	while(!glfwWindowShouldClose(window))
+	while(!glfwWindowShouldClose(applicationWindow))
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		ml.currentScene.render(program);
+		ml.currentScene.render(*activeProgram);
 
-        glfwSwapBuffers(window);
-    	glfwPollEvents();
+		glfwSwapBuffers(applicationWindow);
+		glfwPollEvents();
 	}
 
 	std::cout << "Closing application.";
 	glfwTerminate();
+}
 
-	return 0;
+Window::~Window()
+{
+	//TODO Empty Method destructor
 }
 

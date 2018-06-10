@@ -24,6 +24,8 @@ class Model
 {
 public:
 	unsigned int vaoID;
+	bool wireFrame;
+	glm::vec3 loc, rot, scale;
 
 	struct Vertex {
 		glm::vec3 position;

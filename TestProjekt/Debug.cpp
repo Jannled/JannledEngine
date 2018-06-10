@@ -67,5 +67,8 @@ Debug::MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, G
 			type==GL_DEBUG_TYPE_PUSH_GROUP ? "PUSH_GROUP" :
 			type==GL_DEBUG_TYPE_OTHER ? "OTHER" : "POP GROUP?";
 
-	std::cerr << "OpenGL: " << sseverity << " (" << ssource << "|" << stype << ") " << message << std::endl;
+	if(severity==GL_DEBUG_SEVERITY_HIGH)
+		std::cerr << "OpenGL: " << sseverity << " (" << ssource << "|" << stype << ") " << message << std::endl;
+	else
+		std::cout << "OpenGL: " << sseverity << " (" << ssource << "|" << stype << ") " << message << std::endl;
 }
