@@ -9,12 +9,24 @@
 #define SHADER_SHADERPROGRAM_H_
 
 #include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Shader.h"
 
 class ShaderProgram {
 public:
-	ShaderProgram(Shader shaders[], int size);
+	GLint programID;
+	glm::mat4 acticveProjection;
+
+	ShaderProgram(Shader shaders[], unsigned int size);
+
 	void useProgram();
+	GLint getUniformLocation(const std::string name);
+	void uploadMatrix(glm::mat4 matrix);
+
 	virtual ~ShaderProgram();
 };
 
