@@ -10,7 +10,6 @@ public:
 	virtual ~Shader();
 	void compile();
 
-protected:
 	GLenum type;
 	int shaderID;
 };
