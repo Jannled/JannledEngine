@@ -8,27 +8,38 @@
 #include "lib/cgltf.h"
 
 #include "Window.h"
+#include "Shader/Shader.h"
+#include "Shader/ShaderProgram.h"
+#include "Scene/Model.h"
 
 std::string readFile(const char *path);
 
-float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-};
+std::string vertexShaderSource;
+std::string fragmentShaderSource;
 
-
+Model model;
 
 void pre()
 {
+	Shader vertexShader(vertexShaderSource.c_str(), GL_VERTEX_SHADER);
+	Shader fragmentShader(fragmentShaderSource.c_str(), GL_FRAGMENT_SHADER);
+	vertexShader.compile();
+	fragmentShader.compile();
+
+	ShaderProgram shaderProgram(vertexShader, fragmentShader);
+	shaderProgram.link();
+	shaderProgram.use();
+
 	unsigned int VBO;
-	glGenBuffers(1, &VBO); 
+	glGenBuffers(1, &VBO);
 }
 
 void render()
 {
-	glClearColor(1.0f, 0.5f, 0.5f, 1.0f);
+	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//m.render();
 }
 
 int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd_line, int show)
@@ -49,6 +60,9 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd_line, int show)
 	#else
 		std::cout << "Unknown" << std::endl;
 	#endif
+
+ 	vertexShaderSource = readFile("Shader/simple_vertex.glsl");
+	fragmentShaderSource = readFile("Shader/simple_fragment.glsl");
 
 	Window::render = render;
 	Window::pre = pre;
