@@ -33,15 +33,12 @@ void Shader::compile()
 	if(!reval)
 	{
 		std::cout << "FAIL" << std::endl;
-<<<<<<< HEAD
 		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &reval);
 		GLchar errorLog[reval];
 		glGetShaderInfoLog(shaderID, reval, &reval, &errorLog[0]);
 		std::cerr << errorLog << std::endl;
 		glDeleteShader(shaderID);
 		return;
-=======
->>>>>>> 491d1f82ffc96331f157044555d4250e3f44fb82
 	}
 	else
 		std::cout << "SUCCESS" << std::endl;
