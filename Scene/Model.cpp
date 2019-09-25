@@ -16,7 +16,19 @@ unsigned int indices[] = {  // note that we start from 0!
 
 Model::Model()
 {
+<<<<<<< HEAD
 	glGenVertexArrays(1, &VAO);
+=======
+	GLuint VBO;
+	GLuint VAO;
+	GLuint EBO;
+
+	std::cout << "Hello from Model" << std::endl;
+
+	std::cout << "Address" << &glGenBuffers << std::endl;
+
+	/*glGenVertexArrays(1, &VAO);
+>>>>>>> 491d1f82ffc96331f157044555d4250e3f44fb82
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
@@ -39,14 +51,24 @@ Model::Model()
 
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+<<<<<<< HEAD
     glBindVertexArray(0);
 	std::cout << "VAO: " << VAO << std::endl;
+=======
+    glBindVertexArray(0);*/
+>>>>>>> 491d1f82ffc96331f157044555d4250e3f44fb82
 }
 
 void Model::render()
 {
+<<<<<<< HEAD
 	glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+=======
+	//glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+    //glDrawArrays(GL_TRIANGLES, 0, 6);
+    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+>>>>>>> 491d1f82ffc96331f157044555d4250e3f44fb82
 }
 
 Model::~Model()
