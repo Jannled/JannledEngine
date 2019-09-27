@@ -5,13 +5,14 @@
 #include <fstream>
 
 #include "lib/GL_4_6_core.h"
-#include "lib/cgltf.h"
 
 #include "Window.h"
 #include "Shader/Shader.h"
 #include "Shader/ShaderProgram.h"
 #include "Scene/Model.h"
 #include "Scene/Scene.h"
+
+#include "lib/Math.h"
 
 std::string readFile(const char *path);
 
@@ -33,9 +34,8 @@ void pre()
 
 	scene = new Scene();
 
-	Model model;
-
-	scene->add(model);
+	//Load "Model/WaterBottle.glb" with tinygltf
+	
 }
 
 void render()
@@ -67,6 +67,18 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd_line, int show)
 
  	vertexShaderSource = readFile("Shader/simple_vertex.glsl");
 	fragmentShaderSource = readFile("Shader/simple_fragment.glsl");
+
+	Mat4f a;
+	for(int i=0; i<16; i++)
+		a[i] = i;
+
+	Mat4f b;
+	for(int i=0; i<16; i++)
+		b[i] = i;
+
+	Mat4f c = a.multiply(b);
+	for(int i=0; i<16; i++)
+		printf("Value: %f\n", c[i]);
 
 	Window::render = render;
 	Window::pre = pre;
