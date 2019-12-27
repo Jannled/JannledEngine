@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include "lib/GL_4_6_core.h"
+#include "lib/tiny_gltf.h"
 
 #include "Window.h"
 #include "Shader/Shader.h"
@@ -19,10 +20,23 @@ std::string readFile(const char *path);
 std::string vertexShaderSource;
 std::string fragmentShaderSource;
 
-Scene *scene;
+Model *model;
 
 void pre()
 {
+	float vertices[] = {
+		0.5f,  0.5f, 0.0f,  // top right
+		0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left
+	};
+
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,  // first Triangle
+		1, 2, 3   // second Triangle
+	};
+
+
 	Shader vertexShader(vertexShaderSource.c_str(), GL_VERTEX_SHADER);
 	Shader fragmentShader(fragmentShaderSource.c_str(), GL_FRAGMENT_SHADER);
 	vertexShader.compile();
@@ -32,10 +46,8 @@ void pre()
 	shaderProgram.link();
 	shaderProgram.use();
 
-	scene = new Scene();
-
-	//Load "Model/WaterBottle.glb" with tinygltf
-	
+	ModelData md = {.position = vertices, .c_position = 12, .indices = indices, .c_indices = 6};	
+	model = new Model(md);
 }
 
 void render()
@@ -43,7 +55,7 @@ void render()
 	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	scene->render();
+	model->render();
 }
 
 int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd_line, int show)
@@ -67,18 +79,6 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmd_line, int show)
 
  	vertexShaderSource = readFile("Shader/simple_vertex.glsl");
 	fragmentShaderSource = readFile("Shader/simple_fragment.glsl");
-
-	Mat4f a;
-	for(int i=0; i<16; i++)
-		a[i] = i;
-
-	Mat4f b;
-	for(int i=0; i<16; i++)
-		b[i] = i;
-
-	Mat4f c = a.multiply(b);
-	for(int i=0; i<16; i++)
-		printf("Value: %f\n", c[i]);
 
 	Window::render = render;
 	Window::pre = pre;

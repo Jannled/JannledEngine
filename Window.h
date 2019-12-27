@@ -3,6 +3,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+
 #include <windows.h>
 
 //wglCreateContextAttribsARB_type( ... );

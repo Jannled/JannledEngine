@@ -6,36 +6,51 @@
 struct ModelData
 {
 	float *position;
-	float *normal;
-	float *tangent;
-	float *texcoord_0;
-	float *texcoord_1;
-	float *color_0;
-	float *joints_0;
-	float *weights_0;
-	float *indices;
-
 	size_t c_position;
+
+	float *normal;
 	size_t c_normal;
+
+	float *tangent;
 	size_t c_tangent;
+
+	float *texcoord_0;
 	size_t c_texcoord_0;
+
+	float *texcoord_1;
 	size_t c_texcoord_1;
+
+	float *color_0;
+
+	float *joints_0;
+
+	float *weights_0;
+
+	unsigned int *indices;
+	size_t c_indices;
+
+	
+	
+	
 	size_t c_color_0;
 	size_t c_joints_0;
 	size_t c_weights_0;
-	size_t c_indices;
+	
 };
 
 class Model
 {
 	public:
-		Model(ModelData modelData);
-		Model(cgltf_mesh glTF_mesh);
+		Model(ModelData &modelData);
+		Model();
 		virtual ~Model();
+
 		void render();
 
 	private:
 		ModelData modelData;
+
+		//ID handles for their respective buffer object
 		GLuint POSITION;
 		GLuint NORMAL;
 		GLuint TANGENT;
